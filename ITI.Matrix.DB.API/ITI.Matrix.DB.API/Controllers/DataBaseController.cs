@@ -109,31 +109,30 @@ namespace ITI.Matrix.DB.API.Controllers
 
             BoolResponse result = await _repository.GetIsPortfolioInEDP(clientRfPortfolio);
 
-            if (result.IsSuccess)
+            if (result.Response.IsSuccess)
             {
-                if (result.Messages.Count > 0 && result.Messages[0].Equals("(404)"))
+                if (result.Response.Messages.Count > 0 && result.Response.Messages[0].Equals("(404)"))
                 {
                     return NotFound("(404) not found portfolio " + clientRfPortfolio);
                 }
 
                 if (!result.IsTrue)
                 {
-                    result.Messages.Add("False. Portfolio belong to EDP.");
+                    result.Response.Messages.Add("False. Portfolio belong to EDP.");
                 }
                 else
                 {
-                    result.Messages.Add("Ok. Portfolio non EDP.");
+                    result.Response.Messages.Add("Ok. Portfolio non EDP.");
                 }
                 
                 return Ok(result);
             }
             else
             {
-                return BadRequest(result.Messages);
+                return BadRequest(result.Response.Messages);
             }
         }
 
-        // get personal info
-        // check RF - not in MO
+        // get personal info for OptWSh
     }
 }

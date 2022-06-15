@@ -2,14 +2,7 @@
 {
     public class BoolResponse
     {
-        public BoolResponse()
-        {
-            IsSuccess = true;
-            Messages = new List<string>();
-        }
-        public bool IsSuccess { get; set; }
-        public List<string> Messages { get; set; }
-
+        public ListStringResponseModel Response { get; set; } = new ListStringResponseModel();
         public bool IsTrue { get; set; } = false;
     }
 }

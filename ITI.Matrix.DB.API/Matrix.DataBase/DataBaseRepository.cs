@@ -225,15 +225,15 @@ namespace Matrix.DataBase
             {
                 _logger.LogWarning($"DBRepository GetIsPortfolioInEDP Failed, Exception: " + ex.Message);
 
-                result.IsSuccess = false;
-                result.Messages.Add($"DBRepository GetIsPortfolioInEDP Failed, Exception: " + ex.Message);
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetIsPortfolioInEDP Failed, Exception: " + ex.Message);
             }
 
             _logger.LogInformation($"DBRepository GetIsPortfolioInEDP Success");
 
             if (requestResult == null)
             {
-                result.Messages.Add($"(404)");
+                result.Response.Messages.Add($"(404)");
                 return result;
             }
 
