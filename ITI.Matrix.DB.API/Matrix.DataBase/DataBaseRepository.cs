@@ -14,12 +14,6 @@ namespace Matrix.DataBase
         private readonly string _connectionString = "";
 
         //команды не должны содержать ; в конце! 
-        private const string _queryChechConnection = "select * from moff.CLIENT_PORTFOLIO where id_client = 'BP17840'";
-        private const string _queryGetAllSpotPortfolios = "SELECT ID FROM moff.CLIENT_PORTFOLIO WHERE id_client = :clientCode AND SECBOARD != 'RTS_FUT'";
-        private const string _queryGetAllFortsPortfolios = "SELECT ID, ALIAS FROM moff.CLIENT_PORTFOLIO WHERE id_client = :clientCode AND SECBOARD = 'RTS_FUT'";
-        private const string _queryGetAllFortsNoEDPPortfolios = "SELECT ID, ALIAS  FROM moff.CLIENT_PORTFOLIO WHERE id_client = :clientCode AND SECBOARD = 'RTS_FUT' AND ID_ACCOUNT NOT LIKE '%-MO-%'";
-        private const string _queryGetPortfolioEDPBelongings = "SELECT ID_ACCOUNT FROM moff.CLIENT_PORTFOLIO WHERE ID= :clientportfolio";
-        private const string _queryGetPersonalInfo = "select F_OKPO, E_MAIL from moff.persons where PS_CODE = :clientCode";
 
         public DataBaseRepository(IOptions<DataBaseConnectionConfiguration> connection, ILogger<DataBaseRepository> logger)
         {
@@ -33,11 +27,21 @@ namespace Matrix.DataBase
 
             ListStringResponseModel response = new ListStringResponseModel();
 
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryCheckConnection.sql");
+            if (!File.Exists(filePath))
+            {
+                response.IsSuccess = false;
+                response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return response;
+            }
+
+            string _queryCheckConnection = File.ReadAllText(filePath);
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(_connectionString))
                 {
-                    OracleCommand command = new OracleCommand(_queryChechConnection, connection);
+                    OracleCommand command = new OracleCommand(_queryCheckConnection, connection);
 
                     _logger.LogInformation($"DBRepository CheckConnections try to connect");
                     await connection.OpenAsync();
@@ -71,6 +75,16 @@ namespace Matrix.DataBase
             _logger.LogInformation($"DBRepository GetUserSpotPortfolios for {clientCode} Called");
 
             MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _queryGetAllSpotPortfolios = File.ReadAllText(filePath);
 
             try
             {
@@ -113,6 +127,16 @@ namespace Matrix.DataBase
             _logger.LogInformation($"DBRepository GetUserFortsPortfolios for {clientCode} Called");
 
             MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllFortsPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _queryGetAllFortsPortfolios = File.ReadAllText(filePath);
 
             try
             {
@@ -157,6 +181,16 @@ namespace Matrix.DataBase
 
             MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
 
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllFortsNoEDPPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _queryGetAllFortsNoEDPPortfolios = File.ReadAllText(filePath);
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(_connectionString))
@@ -200,6 +234,16 @@ namespace Matrix.DataBase
 
             BoolResponse result = new BoolResponse();
             string requestResult = null;
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetPortfolioEDPBelongings.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _queryGetPortfolioEDPBelongings = File.ReadAllText(filePath);
 
             try
             {
@@ -251,6 +295,16 @@ namespace Matrix.DataBase
             _logger.LogInformation($"DBRepository GetUserPersonalInfo for {clientCode} Called");
 
             ClientInformationResponse result = new ClientInformationResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetPersonalInfo.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _queryGetPersonalInfo = File.ReadAllText(filePath);
 
             try
             {

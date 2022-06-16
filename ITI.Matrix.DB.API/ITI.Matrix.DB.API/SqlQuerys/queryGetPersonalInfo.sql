@@ -1,0 +1,1 @@
+select F_OKPO, E_MAIL from moff.persons where PS_CODE = :clientCode

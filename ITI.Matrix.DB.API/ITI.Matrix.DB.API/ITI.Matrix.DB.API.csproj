@@ -15,4 +15,28 @@
     <ProjectReference Include="..\Matrix.DataBase\Matrix.DataBase.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="SqlQuerys\queryCheckConnection.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetAllFortsNoEDPPortfolios.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetAllFortsPortfolios.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetAllSpotPortfolios.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetPersonalInfo.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetPortfolioEDPBelongings.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
