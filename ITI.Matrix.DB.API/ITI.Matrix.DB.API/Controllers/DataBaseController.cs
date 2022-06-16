@@ -171,20 +171,18 @@ namespace ITI.Matrix.DB.API.Controllers
             {
                 var nameArray = result.ClientInformation.LastName.Split(" ");
 
-                var ll = nameArray.Length;
-
                 if (nameArray.Length == 3)//Иванов Иван Иваныч
                 {
                     result.ClientInformation.LastName = nameArray[0];
                     result.ClientInformation.FirstName = nameArray[1];
                     result.ClientInformation.MiddleName = nameArray[2];
                 }
-                else if (nameArray.Length == 2)//Иванов Иван
+                else if (nameArray.Length == 2)//Иванов Иван // BP67352
                 {
                     result.ClientInformation.LastName = nameArray[0];
                     result.ClientInformation.FirstName = nameArray[1];
                 }
-                else//больше 3х слов в имени
+                else//больше 3х слов в имени //BP66476
                 {                    
                     result.ClientInformation.FirstName = result.ClientInformation.LastName
                         .Replace(nameArray[0], "")
