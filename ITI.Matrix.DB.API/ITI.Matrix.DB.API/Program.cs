@@ -1,5 +1,6 @@
 using DataAbstraction.Connections;
 using DataAbstraction.Interfaces;
+using DataAbstraction.Models;
 using Matrix.DataBase;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IDataBaseRepository, DataBaseRepository>();
 builder.Services.Configure<DataBaseConnectionConfiguration>(
     builder.Configuration.GetSection("DataBaseConfig"));
+
+// Set portfolios type list, enabled for new non EDP QUIK user
+builder.Services.Configure<PortfoliosAllowedForNonEDP>(
+    builder.Configuration.GetSection("PortfoliosForNonEDP"));
 
 var app = builder.Build();
 

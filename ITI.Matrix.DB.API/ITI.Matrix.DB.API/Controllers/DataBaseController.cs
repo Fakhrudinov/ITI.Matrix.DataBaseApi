@@ -1,7 +1,9 @@
 ﻿using DataAbstraction.Interfaces;
+using DataAbstraction.Models;
 using DataAbstraction.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace ITI.Matrix.DB.API.Controllers
 {
@@ -11,12 +13,14 @@ namespace ITI.Matrix.DB.API.Controllers
     {
         private ILogger<DataBaseController> _logger;
         private IDataBaseRepository _repository;
+        private PortfoliosAllowedForNonEDP _portfolioFilter;
 
 
-        public DataBaseController(ILogger<DataBaseController> logger, IDataBaseRepository repository)
+        public DataBaseController(ILogger<DataBaseController> logger, IDataBaseRepository repository, IOptions<PortfoliosAllowedForNonEDP> portfolioFilter)
         {
             _logger = logger;
             _repository = repository;
+            _portfolioFilter = portfolioFilter.Value;
         }
 
         [HttpGet("CheckConnections/MatrixDataBase")]
@@ -48,6 +52,39 @@ namespace ITI.Matrix.DB.API.Controllers
                 if (result.MatrixClientCodesList.Count == 0)
                 {
                     return NotFound();
+                }
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Response.Messages);
+            }
+        }
+
+
+        [HttpGet("GetUser/SpotPortfolios/Filtered/{clientCode}")]
+        public async Task<IActionResult> GetUserSpotPortfoliosFiltered(string clientCode)
+        {
+            _logger.LogInformation($"HttpGet GetUser/SpotPortfolios/Filtered {clientCode} Call");
+
+            MatrixClientCodeModelResponse result = await _repository.GetUserSpotPortfolios(clientCode);
+
+            if (result.Response.IsSuccess)
+            {
+                if (result.MatrixClientCodesList.Count == 0)
+                {
+                    return NotFound();
+                }
+
+
+                // remove portfolios - which not passed filter
+                for (int i = result.MatrixClientCodesList.Count - 1; i > 0; i--)
+                {
+                    if (!_portfolioFilter.PortfolioList.Contains(result.MatrixClientCodesList[i].MatrixClientCode.Split("-")[1]))
+                    {
+                        result.MatrixClientCodesList.Remove(result.MatrixClientCodesList[i]);
+                    }
                 }
 
                 return Ok(result);
