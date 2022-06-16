@@ -19,6 +19,7 @@ namespace Matrix.DataBase
         private const string _queryGetAllFortsPortfolios = "SELECT ID, ALIAS FROM moff.CLIENT_PORTFOLIO WHERE id_client = :clientCode AND SECBOARD = 'RTS_FUT'";
         private const string _queryGetAllFortsNoEDPPortfolios = "SELECT ID, ALIAS  FROM moff.CLIENT_PORTFOLIO WHERE id_client = :clientCode AND SECBOARD = 'RTS_FUT' AND ID_ACCOUNT NOT LIKE '%-MO-%'";
         private const string _queryGetPortfolioEDPBelongings = "SELECT ID_ACCOUNT FROM moff.CLIENT_PORTFOLIO WHERE ID= :clientportfolio";
+        private const string _queryGetPersonalInfo = "select F_OKPO, E_MAIL from moff.persons where PS_CODE = :clientCode";
 
         public DataBaseRepository(IOptions<DataBaseConnectionConfiguration> connection, ILogger<DataBaseRepository> logger)
         {
@@ -242,6 +243,54 @@ namespace Matrix.DataBase
                 result.IsTrue = true;
             }
 
+            return result;
+        }
+
+        public async Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode)
+        {
+            _logger.LogInformation($"DBRepository GetUserPersonalInfo for {clientCode} Called");
+
+            ClientInformationResponse result = new ClientInformationResponse();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(_queryGetPersonalInfo, connection);
+                    command.Parameters.Add(":clientCode", clientCode);
+
+                    _logger.LogInformation($"DBRepository GetUserPersonalInfo try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            result.ClientInformation.LastName = reader.GetString(0);
+
+                            if (!reader.IsDBNull(1))
+                            {
+                                result.ClientInformation.EMail = reader.GetString(1);
+                            }
+                            else
+                            {
+                                result.ClientInformation.EMail = "noEmailFound@inDataBase.mtrx";
+                            }
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"DBRepository GetUserPersonalInfo Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetUserPersonalInfo Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"DBRepository GetUserPersonalInfo Success");
             return result;
         }
     }
