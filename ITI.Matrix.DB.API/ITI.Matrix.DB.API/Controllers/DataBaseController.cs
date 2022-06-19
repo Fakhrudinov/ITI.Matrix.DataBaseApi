@@ -139,10 +139,10 @@ namespace ITI.Matrix.DB.API.Controllers
             }
         }
 
-        [HttpGet("Get/IsPortfolios/InEDP/{clientRfPortfolio}")]
+        [HttpGet("Get/IsPortfolios/nonEDP/{clientRfPortfolio}")]
         public async Task<IActionResult> GetIsPortfolioInEDP(string clientRfPortfolio)
         {
-            _logger.LogInformation($"HttpGet Get/IsPortfolios/InEDP/{clientRfPortfolio} Call");
+            _logger.LogInformation($"HttpGet Get/IsPortfolios/nonEDP/{clientRfPortfolio} Call");
 
             BoolResponse result = await _repository.GetIsPortfolioInEDP(clientRfPortfolio);
 
