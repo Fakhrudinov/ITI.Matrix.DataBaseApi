@@ -139,18 +139,18 @@ namespace ITI.Matrix.DB.API.Controllers
             }
         }
 
-        [HttpGet("Get/IsPortfolios/nonEDP/{clientRfPortfolio}")]
-        public async Task<IActionResult> GetIsPortfolioInEDP(string clientRfPortfolio)
+        [HttpGet("Get/IsPortfolios/nonEDP/{clientPortfolio}")]
+        public async Task<IActionResult> GetIsPortfolioInEDP(string clientPortfolio)
         {
-            _logger.LogInformation($"HttpGet Get/IsPortfolios/nonEDP/{clientRfPortfolio} Call");
+            _logger.LogInformation($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Call");
 
-            BoolResponse result = await _repository.GetIsPortfolioInEDP(clientRfPortfolio);
+            BoolResponse result = await _repository.GetIsPortfolioInEDP(clientPortfolio);
 
             if (result.Response.IsSuccess)
             {
                 if (result.Response.Messages.Count > 0 && result.Response.Messages[0].Equals("(404)"))
                 {
-                    return NotFound("(404) not found portfolio " + clientRfPortfolio);
+                    return NotFound("(404) not found portfolio " + clientPortfolio);
                 }
 
                 if (!result.IsTrue)

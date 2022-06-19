@@ -8,7 +8,7 @@ namespace DataAbstraction.Interfaces
         Task<MatrixClientCodeModelResponse> GetUserSpotPortfolios(string clientCode);
         Task<MatrixToFortsCodesMappingResponse> GetUserFortsPortfolios(string clientCode);
         Task<MatrixToFortsCodesMappingResponse> GetUserFortsPortfoliosNoEDP(string clientCode);
-        Task<BoolResponse> GetIsPortfolioInEDP(string clientRfPortfolio);
+        Task<BoolResponse> GetIsPortfolioInEDP(string clientPortfolio);
         Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode);
         Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode);
         Task<BoolResponse> GetIsClientBelongsToQUIK(string clientCode);

@@ -228,9 +228,9 @@ namespace Matrix.DataBase
             return result;
         }
 
-        public async Task<BoolResponse> GetIsPortfolioInEDP(string clientRfPortfolio)
+        public async Task<BoolResponse> GetIsPortfolioInEDP(string clientPortfolio)
         {
-            _logger.LogInformation($"DBRepository GetIsPortfolioInEDP for {clientRfPortfolio} Called");
+            _logger.LogInformation($"DBRepository GetIsPortfolioInEDP for {clientPortfolio} Called");
 
             BoolResponse result = new BoolResponse();
             string requestResult = null;
@@ -250,7 +250,7 @@ namespace Matrix.DataBase
                 using (OracleConnection connection = new OracleConnection(_connectionString))
                 {
                     OracleCommand command = new OracleCommand(_queryGetPortfolioEDPBelongings, connection);
-                    command.Parameters.Add(":clientportfolio", clientRfPortfolio);
+                    command.Parameters.Add(":clientportfolio", clientPortfolio);
 
                     _logger.LogInformation($"DBRepository GetIsPortfolioInEDP try to connect");
                     await connection.OpenAsync();
