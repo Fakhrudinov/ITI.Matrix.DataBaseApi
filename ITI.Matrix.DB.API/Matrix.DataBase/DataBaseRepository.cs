@@ -347,5 +347,112 @@ namespace Matrix.DataBase
             _logger.LogInformation($"DBRepository GetUserPersonalInfo Success");
             return result;
         }
+
+        public async Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode)
+        {
+            _logger.LogInformation($"DBRepository GetUserBOPersonalInfo for {clientCode} Called");
+
+            ClientBOInformationResponse result = new ClientBOInformationResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetBOPersonalInfo.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+            string queryGetBOPersonalInfo = File.ReadAllText(filePath);
+
+            string clientType = "";
+            string registerDate = "";
+            int clientResidensyType = 0;
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryGetBOPersonalInfo, connection);
+                    command.Parameters.Add(":clientCode", clientCode);
+
+                    _logger.LogInformation($"DBRepository GetUserBOPersonalInfo try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            clientType = reader.GetString(0);
+                            registerDate = reader.GetString(1);
+
+                            if (!reader.IsDBNull(2))
+                            {
+                                result.ClientBOInformation.Address = reader.GetString(2);
+                            }
+
+                            if (!reader.IsDBNull(3))
+                            {
+                                clientResidensyType = reader.GetInt32(3);
+                            }
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"DBRepository GetUserBOPersonalInfo Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetUserBOPersonalInfo Failed, Exception: " + ex.Message);
+            }
+
+            //проверка успешности и обработка данных
+            if (clientType.Equals(""))
+            {
+                result.Response.Messages.Add("(404) type not found");
+                return result;
+            }
+            else
+            {
+                if (clientType.Equals("P"))
+                {
+                    result.ClientBOInformation.isClientPerson = true;
+                }
+                else
+                {
+                    result.ClientBOInformation.isClientPerson = false;
+                }
+            }
+
+            if (registerDate.Equals(""))
+            {
+                result.Response.Messages.Add("(404) date not found");
+                return result;
+            }
+            else
+            {
+                //from db result:       11.10.17         == ДД.ММ.ГГ
+                registerDate = registerDate.Replace(",", ".");
+                //need to be result:    20160714         == Дата заключения договора.Формат: ГГГГММДД. 
+                var dateParts = registerDate.Split(".");
+
+                registerDate = "20" + dateParts[2] + dateParts[1] + dateParts[0];
+
+                result.ClientBOInformation.RegisterDate = Int32.Parse(registerDate);
+            }
+
+            if (clientResidensyType == 2)
+            {
+                result.ClientBOInformation.isClientResident = false;
+            }
+            else
+            {
+                result.ClientBOInformation.isClientResident = true;
+            }
+
+            _logger.LogInformation($"DBRepository GetUserBOPersonalInfo Success");
+            return result;
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace DataAbstraction.Interfaces
         Task<MatrixToFortsCodesMappingResponse> GetUserFortsPortfoliosNoEDP(string clientCode);
         Task<BoolResponse> GetIsPortfolioInEDP(string clientRfPortfolio);
         Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode);
+        Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode);
     }
 }

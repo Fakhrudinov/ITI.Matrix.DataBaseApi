@@ -4,6 +4,7 @@ using DataAbstraction.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Text.RegularExpressions;
 
 namespace ITI.Matrix.DB.API.Controllers
 {
@@ -76,7 +77,6 @@ namespace ITI.Matrix.DB.API.Controllers
                 {
                     return NotFound();
                 }
-
 
                 // remove portfolios - which not passed filter
                 for (int i = result.MatrixClientCodesList.Count - 1; i > 0; i--)
@@ -200,6 +200,46 @@ namespace ITI.Matrix.DB.API.Controllers
             {
                 return BadRequest(result.Response.Messages);
             }
+        }
+
+        [HttpGet("GetUser/PersonalInfo/BackOffice/{clientCode}")]
+        public async Task<IActionResult> GetUserBOPersonalInfo(string clientCode)
+        {
+            _logger.LogInformation($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Call");
+
+            ClientBOInformationResponse result = await _repository.GetUserBOPersonalInfo(clientCode);
+
+            if (result.Response.IsSuccess)
+            {
+                if (result.ClientBOInformation.RegisterDate == 0)
+                {
+                    return NotFound();
+                }
+
+                //clean address
+                result.ClientBOInformation.Address = CleadClientAddress(result.ClientBOInformation.Address);
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Response.Messages);
+            }
+        }
+
+        private string CleadClientAddress(string address)
+        {
+            string pattern = @"[^ |A-Za-z|А-яа-яЁё|\.|,|/|\d|-]";
+            
+            Regex regex = new Regex(pattern);
+            string result = regex.Replace(address, "");
+            result = Regex.Replace(result, "\\,+", ",");
+            result = Regex.Replace(result, ",+", ", ");
+            result = Regex.Replace(result, "\\s+", " ");//, ,
+            result = Regex.Replace(result, ", , ", ", ");
+            result = result.Trim();
+            
+            return result;
         }
 
         private ClientInformationResponse WorkWithPersonClientName(ClientInformationResponse result)
