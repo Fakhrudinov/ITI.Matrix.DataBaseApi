@@ -11,5 +11,6 @@ namespace DataAbstraction.Interfaces
         Task<BoolResponse> GetIsPortfolioInEDP(string clientRfPortfolio);
         Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode);
         Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode);
+        Task<BoolResponse> GetIsClientBelongsToQUIK(string clientCode);
     }
 }

@@ -170,6 +170,37 @@ namespace ITI.Matrix.DB.API.Controllers
             }
         }
 
+        [HttpGet("Get/IsClient/inQUIK/{clientCode}")]
+        public async Task<IActionResult> GetIsClientBelongsToQUIK(string clientCode)
+        {
+            _logger.LogInformation($"HttpGet Get/IsClient/inQUIK/{clientCode} Call");
+
+            BoolResponse result = await _repository.GetIsClientBelongsToQUIK(clientCode);
+
+            if (result.Response.IsSuccess)
+            {
+                if (result.Response.Messages.Count > 0 && result.Response.Messages[0].Equals("(404)"))
+                {
+                    return NotFound("(404) client not found " + clientCode);
+                }
+
+                if (result.IsTrue)
+                {                   
+                    result.Response.Messages.Add("Ok. It is QUIK client");
+                }
+                else
+                {
+                    result.Response.Messages.Add("False. It is MATRIX client");
+                }
+
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Response.Messages);
+            }
+        }
+
         [HttpGet("GetUser/PersonalInfo/{clientCode}")]
         public async Task<IActionResult> GetUserPersonalInfo(string clientCode)
         {

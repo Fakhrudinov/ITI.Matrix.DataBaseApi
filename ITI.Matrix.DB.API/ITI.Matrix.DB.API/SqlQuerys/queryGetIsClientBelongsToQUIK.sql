@@ -1,0 +1,1 @@
+select TRADE_SYSTEM  from moff.persons  where PS_CODE = :clientCode

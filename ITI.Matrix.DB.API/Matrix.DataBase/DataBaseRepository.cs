@@ -290,6 +290,69 @@ namespace Matrix.DataBase
             return result;
         }
 
+
+        public async Task<BoolResponse> GetIsClientBelongsToQUIK(string clientCode)
+        {
+            _logger.LogInformation($"DBRepository GetIsClientBelongsToQUIK for {clientCode} Called");
+
+            BoolResponse result = new BoolResponse();
+            string requestResult = null;
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetIsClientBelongsToQUIK.sql");
+            if (!File.Exists(filePath))
+            {
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetIsClientBelongsToQUIK = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryGetIsClientBelongsToQUIK, connection);
+                    command.Parameters.Add(":clientCode", clientCode);
+
+                    _logger.LogInformation($"DBRepository GetIsClientBelongsToQUIK try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            requestResult = reader.GetString(0);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"DBRepository GetIsClientBelongsToQUIK Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetIsClientBelongsToQUIK Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"DBRepository GetIsClientBelongsToQUIK Success");
+
+            if (requestResult == null)
+            {
+                result.Response.Messages.Add($"(404)");
+                return result;
+            }
+
+            if (requestResult.Equals("Q"))
+            {
+                result.IsTrue = true;
+            }
+
+            return result;
+        }
+
         public async Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode)
         {
             _logger.LogInformation($"DBRepository GetUserPersonalInfo for {clientCode} Called");
