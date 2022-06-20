@@ -47,6 +47,13 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/SpotPortfolios {clientCode} Call");
 
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
+
             MatrixClientCodeModelResponse result = await _repository.GetUserSpotPortfolios(clientCode);
 
             if (result.Response.IsSuccess)
@@ -69,6 +76,13 @@ namespace ITI.Matrix.DB.API.Controllers
         public async Task<IActionResult> GetUserSpotPortfoliosFiltered(string clientCode)
         {
             _logger.LogInformation($"HttpGet GetUser/SpotPortfolios/Filtered {clientCode} Call");
+
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios/Filtered/ {clientCode} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
 
             MatrixClientCodeModelResponse result = await _repository.GetUserSpotPortfolios(clientCode);
 
@@ -101,6 +115,13 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/FortsPortfolios {clientCode} Call");
 
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
+
             MatrixToFortsCodesMappingResponse result = await _repository.GetUserFortsPortfolios(clientCode);
 
             if (result.Response.IsSuccess)
@@ -126,10 +147,9 @@ namespace ITI.Matrix.DB.API.Controllers
             ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
             if (!validationResult.IsSuccess)
             {
+                _logger.LogWarning($"HttpGet GetUser/NoEDP/FortsPortfolios {clientCode} Validation Fail: {validationResult.Messages[0]}");
                 return BadRequest(validationResult);
             }
-
-
 
             MatrixToFortsCodesMappingResponse result = await _repository.GetUserFortsPortfoliosNoEDP(clientCode);
 
@@ -152,6 +172,13 @@ namespace ITI.Matrix.DB.API.Controllers
         public async Task<IActionResult> GetIsPortfolioInEDP(string clientPortfolio)
         {
             _logger.LogInformation($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Call");
+
+            ListStringResponseModel validationResult = Validator.ValidateClientPortfolio(clientPortfolio);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
 
             BoolResponse result = await _repository.GetIsPortfolioInEDP(clientPortfolio);
 
@@ -184,6 +211,13 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet Get/IsClient/inQUIK/{clientCode} Call");
 
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet Get/IsClient/inQUIK/{clientCode} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
+
             BoolResponse result = await _repository.GetIsClientBelongsToQUIK(clientCode);
 
             if (result.Response.IsSuccess)
@@ -214,6 +248,13 @@ namespace ITI.Matrix.DB.API.Controllers
         public async Task<IActionResult> GetUserPersonalInfo(string clientCode)
         {
             _logger.LogInformation($"HttpGet GetUser/PersonalInfo/{clientCode} Call");
+
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/{clientCode} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
 
             ClientInformationResponse result = await _repository.GetUserPersonalInfo(clientCode);
 
@@ -246,6 +287,13 @@ namespace ITI.Matrix.DB.API.Controllers
         public async Task<IActionResult> GetUserBOPersonalInfo(string clientCode)
         {
             _logger.LogInformation($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Call");
+
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Validation Fail: {validationResult.Messages[0]}");
+                return BadRequest(validationResult);
+            }
 
             ClientBOInformationResponse result = await _repository.GetUserBOPersonalInfo(clientCode);
 
