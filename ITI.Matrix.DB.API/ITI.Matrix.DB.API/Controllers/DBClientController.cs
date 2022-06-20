@@ -11,36 +11,20 @@ namespace ITI.Matrix.DB.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DataBaseController : ControllerBase
+    public class DBClientController : ControllerBase
     {
-        private ILogger<DataBaseController> _logger;
+        private ILogger<DBClientController> _logger;
         private IDataBaseRepository _repository;
         private PortfoliosAllowedForNonEDP _portfolioFilter;
 
 
-        public DataBaseController(ILogger<DataBaseController> logger, IDataBaseRepository repository, IOptions<PortfoliosAllowedForNonEDP> portfolioFilter)
+        public DBClientController(ILogger<DBClientController> logger, IDataBaseRepository repository, IOptions<PortfoliosAllowedForNonEDP> portfolioFilter)
         {
             _logger = logger;
             _repository = repository;
             _portfolioFilter = portfolioFilter.Value;
         }
 
-        [HttpGet("CheckConnections/MatrixDataBase")]
-        public async Task<IActionResult> CheckConnection()
-        {
-            _logger.LogInformation("HttpGet CheckConnections/MatrixDataBase Call");
-
-            ListStringResponseModel result = await _repository.CheckConnections();
-
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Messages);
-            }
-        }
 
         [HttpGet("GetUser/SpotPortfolios/{clientCode}")]
         public async Task<IActionResult> GetUserSpotPortfolios(string clientCode)
@@ -70,7 +54,6 @@ namespace ITI.Matrix.DB.API.Controllers
                 return BadRequest(result.Response.Messages);
             }
         }
-
 
         [HttpGet("GetUser/SpotPortfolios/Filtered/{clientCode}")]
         public async Task<IActionResult> GetUserSpotPortfoliosFiltered(string clientCode)
