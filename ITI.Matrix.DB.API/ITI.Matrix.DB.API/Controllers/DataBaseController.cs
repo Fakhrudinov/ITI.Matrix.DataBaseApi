@@ -1,6 +1,7 @@
 ﻿using DataAbstraction.Interfaces;
 using DataAbstraction.Models;
 using DataAbstraction.Responses;
+using DataValidationService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -121,6 +122,14 @@ namespace ITI.Matrix.DB.API.Controllers
         public async Task<IActionResult> GetUserFortsNoEDPPortfolios(string clientCode)
         {
             _logger.LogInformation($"HttpGet GetUser/NoEDP/FortsPortfolios {clientCode} Call");
+
+            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
+            if (!validationResult.IsSuccess)
+            {
+                return BadRequest(validationResult);
+            }
+
+
 
             MatrixToFortsCodesMappingResponse result = await _repository.GetUserFortsPortfoliosNoEDP(clientCode);
 

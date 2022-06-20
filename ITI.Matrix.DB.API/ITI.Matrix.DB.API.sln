@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAbstraction", "DataAbst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Matrix.DataBase", "Matrix.DataBase\Matrix.DataBase.csproj", "{ED06DCD3-68E9-4019-AA0B-FE7E81D2138D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataValidationService", "DataValidationService\DataValidationService.csproj", "{1AF9E6CD-2E35-487D-B147-9AB07E4DC77C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ED06DCD3-68E9-4019-AA0B-FE7E81D2138D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED06DCD3-68E9-4019-AA0B-FE7E81D2138D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED06DCD3-68E9-4019-AA0B-FE7E81D2138D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AF9E6CD-2E35-487D-B147-9AB07E4DC77C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AF9E6CD-2E35-487D-B147-9AB07E4DC77C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AF9E6CD-2E35-487D-B147-9AB07E4DC77C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AF9E6CD-2E35-487D-B147-9AB07E4DC77C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

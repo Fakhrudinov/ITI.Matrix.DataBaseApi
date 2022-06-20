@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAbstraction\DataAbstraction.csproj" />
+    <ProjectReference Include="..\DataValidationService\DataValidationService.csproj" />
     <ProjectReference Include="..\Matrix.DataBase\Matrix.DataBase.csproj" />
   </ItemGroup>
 
