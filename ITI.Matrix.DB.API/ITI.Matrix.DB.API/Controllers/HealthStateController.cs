@@ -32,14 +32,7 @@ namespace ITI.Matrix.DB.API.Controllers
 
             ListStringResponseModel result = await _repository.CheckConnections();
 
-            if (result.IsSuccess)
-            {
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Messages);
-            }
+            return Ok(result);
         }
     }
 }

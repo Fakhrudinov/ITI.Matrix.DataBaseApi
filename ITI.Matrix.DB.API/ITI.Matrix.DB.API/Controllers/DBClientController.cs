@@ -2,7 +2,6 @@
 using DataAbstraction.Models;
 using DataAbstraction.Responses;
 using DataValidationService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
@@ -31,28 +30,27 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/SpotPortfolios {clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            MatrixClientCodeModelResponse result = await _repository.GetUserSpotPortfolios(clientCode);
+            result = await _repository.GetUserSpotPortfolios(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.MatrixClientCodesList.Count == 0)
                 {
-                    return NotFound();
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
+            }
 
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+            return Ok(result);
         }
 
         [HttpGet("GetUser/SpotPortfolios/Filtered/{clientCode}")]
@@ -60,37 +58,38 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/SpotPortfolios/Filtered {clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios/Filtered/ {clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            MatrixClientCodeModelResponse result = await _repository.GetUserSpotPortfolios(clientCode);
+            result = await _repository.GetUserSpotPortfolios(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.MatrixClientCodesList.Count == 0)
                 {
-                    return NotFound();
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
-
-                // remove portfolios - which not passed filter
-                for (int i = result.MatrixClientCodesList.Count - 1; i > 0; i--)
+                else
                 {
-                    if (!_portfolioFilter.PortfolioList.Contains(result.MatrixClientCodesList[i].MatrixClientCode.Split("-")[1]))
+                    // remove portfolios - which not passed filter
+                    for (int i = result.MatrixClientCodesList.Count - 1; i > 0; i--)
                     {
-                        result.MatrixClientCodesList.Remove(result.MatrixClientCodesList[i]);
+                        if (!_portfolioFilter.PortfolioList.Contains(result.MatrixClientCodesList[i].MatrixClientCode.Split("-")[1]))
+                        {
+                            result.MatrixClientCodesList.Remove(result.MatrixClientCodesList[i]);
+                        }
                     }
                 }
+            }
 
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+            return Ok(result);
         }
 
         [HttpGet("GetUser/FortsPortfolios/{clientCode}")]
@@ -98,28 +97,27 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/FortsPortfolios {clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            MatrixToFortsCodesMappingResponse result = await _repository.GetUserFortsPortfolios(clientCode);
+            result = await _repository.GetUserFortsPortfolios(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.MatrixToFortsCodesList.Count == 0)
                 {
-                    return NotFound();
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
+            }
 
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+            return Ok(result);
         }
 
         [HttpGet("GetUser/FortsPortfolios/NoEDP/{clientCode}")]
@@ -127,28 +125,27 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/NoEDP/FortsPortfolios {clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/NoEDP/FortsPortfolios {clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            MatrixToFortsCodesMappingResponse result = await _repository.GetUserFortsPortfoliosNoEDP(clientCode);
+            result = await _repository.GetUserFortsPortfoliosNoEDP(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.MatrixToFortsCodesList.Count == 0)
                 {
-                    return NotFound();
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
+            }
 
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+            return Ok(result);
         }
 
         [HttpGet("Get/IsPortfolios/nonEDP/{clientPortfolio}")]
@@ -156,37 +153,38 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientPortfolio(clientPortfolio);
-            if (!validationResult.IsSuccess)
+            BoolResponse result = new BoolResponse();
+
+            result.Response = Validator.ValidateClientPortfolio(clientPortfolio);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            BoolResponse result = await _repository.GetIsPortfolioInEDP(clientPortfolio);
+            result = await _repository.GetIsPortfolioInEDP(clientPortfolio);
 
             if (result.Response.IsSuccess)
             {
                 if (result.Response.Messages.Count > 0 && result.Response.Messages[0].Equals("(404)"))
                 {
-                    return NotFound("(404) not found portfolio " + clientPortfolio);
-                }
-
-                if (!result.IsTrue)
-                {
-                    result.Response.Messages.Add("False. Portfolio belong to EDP.");
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientPortfolio);
                 }
                 else
                 {
-                    result.Response.Messages.Add("Ok. Portfolio non EDP.");
+                    if (!result.IsTrue)
+                    {
+                        result.Response.Messages.Add("False. Portfolio belong to EDP.");
+                    }
+                    else
+                    {
+                        result.Response.Messages.Add("Ok. Portfolio non EDP.");
+                    }
                 }
-                
-                return Ok(result);
             }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+
+            return Ok(result);
         }
 
         [HttpGet("Get/IsClient/inQUIK/{clientCode}")]
@@ -194,37 +192,38 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet Get/IsClient/inQUIK/{clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            BoolResponse result = new BoolResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet Get/IsClient/inQUIK/{clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet Get/IsClient/inQUIK/{clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            BoolResponse result = await _repository.GetIsClientBelongsToQUIK(clientCode);
+            result = await _repository.GetIsClientBelongsToQUIK(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.Response.Messages.Count > 0 && result.Response.Messages[0].Equals("(404)"))
                 {
-                    return NotFound("(404) client not found " + clientCode);
-                }
-
-                if (result.IsTrue)
-                {                   
-                    result.Response.Messages.Add("Ok. It is QUIK client");
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
                 else
                 {
-                    result.Response.Messages.Add("False. It is MATRIX client");
+                    if (result.IsTrue)
+                    {
+                        result.Response.Messages.Add("Ok. It is QUIK client");
+                    }
+                    else
+                    {
+                        result.Response.Messages.Add("False. It is MATRIX client");
+                    }
                 }
+            }
 
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+            return Ok(result);
         }
 
         [HttpGet("GetUser/PersonalInfo/{clientCode}")]
@@ -232,38 +231,38 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/PersonalInfo/{clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            ClientInformationResponse result = new ClientInformationResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/{clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/{clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            ClientInformationResponse result = await _repository.GetUserPersonalInfo(clientCode);
+            result = await _repository.GetUserPersonalInfo(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.ClientInformation.LastName is null)
                 {
-                    return NotFound();
-                }
-
-                if (clientCode.StartsWith("BC") || clientCode.StartsWith("AA"))
-                {
-                    result = WorkWithOrganizationClientName(result);
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
                 else
                 {
-                    result = WorkWithPersonClientName(result);
+                    if (clientCode.StartsWith("BC") || clientCode.StartsWith("AA"))
+                    {
+                        result = WorkWithOrganizationClientName(result);
+                    }
+                    else
+                    {
+                        result = WorkWithPersonClientName(result);
+                    }
                 }
-                
+            }
 
-                return Ok(result);
-            }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+            return Ok(result);
         }
 
         [HttpGet("GetUser/PersonalInfo/BackOffice/{clientCode}")]
@@ -271,31 +270,32 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Call");
 
-            ListStringResponseModel validationResult = Validator.ValidateClientCode(clientCode);
-            if (!validationResult.IsSuccess)
+            ClientBOInformationResponse result = new ClientBOInformationResponse();
+
+            result.Response = Validator.ValidateClientCode(clientCode);
+            if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Validation Fail: {validationResult.Messages[0]}");
-                return BadRequest(validationResult);
+                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Validation Fail: {result.Response.Messages[0]}");
+                return Ok(result);
             }
 
-            ClientBOInformationResponse result = await _repository.GetUserBOPersonalInfo(clientCode);
+            result = await _repository.GetUserBOPersonalInfo(clientCode);
 
             if (result.Response.IsSuccess)
             {
                 if (result.ClientBOInformation.RegisterDate == 0)
                 {
-                    return NotFound();
+                    result.Response.IsSuccess = false;
+                    result.Response.Messages.Add("(404) Not found: " + clientCode);
                 }
-
-                //clean address
-                result.ClientBOInformation.Address = CleadClientAddress(result.ClientBOInformation.Address);
-
-                return Ok(result);
+                else
+                {
+                    //clean address
+                    result.ClientBOInformation.Address = CleadClientAddress(result.ClientBOInformation.Address);
+                }
             }
-            else
-            {
-                return BadRequest(result.Response.Messages);
-            }
+
+            return Ok(result);
         }
 
         private string CleadClientAddress(string address)
