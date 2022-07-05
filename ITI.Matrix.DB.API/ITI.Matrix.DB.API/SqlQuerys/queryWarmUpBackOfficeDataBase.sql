@@ -1,0 +1,1 @@
+SELECT ps_type FROM itbo11.persons@boffce_moff_link WHERE rownum = 1

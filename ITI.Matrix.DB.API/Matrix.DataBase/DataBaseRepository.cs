@@ -411,6 +411,46 @@ namespace Matrix.DataBase
             return result;
         }
 
+        public async Task WarmUpBackOfficeDataBase()
+        {
+            _logger.LogInformation($"DBRepository WarmUpBackOfficeDataBase Called");
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryWarmUpBackOfficeDataBase.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"DBRepository WarmUpBackOfficeDataBase Failed, Exception: File with request not found at path: " + filePath);
+            }
+            string queryWarmUpBackOfficeDataBase = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryWarmUpBackOfficeDataBase, connection);
+
+
+                    _logger.LogInformation($"DBRepository WarmUpBackOfficeDataBase try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var result = reader.GetString(0);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"DBRepository WarmUpBackOfficeDataBase Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"DBRepository WarmUpBackOfficeDataBase Success");
+        }
+
         public async Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode)
         {
             _logger.LogInformation($"DBRepository GetUserBOPersonalInfo for {clientCode} Called");

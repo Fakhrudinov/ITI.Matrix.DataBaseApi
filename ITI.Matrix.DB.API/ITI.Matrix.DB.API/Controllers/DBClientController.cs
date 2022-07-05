@@ -265,6 +265,16 @@ namespace ITI.Matrix.DB.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("WarmUp/BackOfficeDataBase")]
+        public async Task<IActionResult> WarmUpBackOfficeDataBase()
+        {
+            _logger.LogInformation($"HttpGet WarmUp/BackOfficeDataBase Call");
+
+            await _repository.WarmUpBackOfficeDataBase();
+
+            return Ok();
+        }
+
         [HttpGet("GetUser/PersonalInfo/BackOffice/{clientCode}")]
         public async Task<IActionResult> GetUserBOPersonalInfo(string clientCode)
         {

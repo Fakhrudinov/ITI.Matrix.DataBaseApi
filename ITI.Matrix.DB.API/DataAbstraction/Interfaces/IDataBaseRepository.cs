@@ -12,5 +12,6 @@ namespace DataAbstraction.Interfaces
         Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode);
         Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode);
         Task<BoolResponse> GetIsClientBelongsToQUIK(string clientCode);
+        Task WarmUpBackOfficeDataBase();
     }
 }
