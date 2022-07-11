@@ -28,14 +28,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("GetUser/SpotPortfolios/{clientCode}")]
         public async Task<IActionResult> GetUserSpotPortfolios(string clientCode)
         {
-            _logger.LogInformation($"HttpGet GetUser/SpotPortfolios {clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/SpotPortfolios {clientCode} Call");
 
             MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -56,14 +56,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("GetUser/SpotPortfolios/Filtered/{clientCode}")]
         public async Task<IActionResult> GetUserSpotPortfoliosFiltered(string clientCode)
         {
-            _logger.LogInformation($"HttpGet GetUser/SpotPortfolios/Filtered {clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/SpotPortfolios/Filtered {clientCode} Call");
 
             MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/SpotPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -95,14 +95,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("GetUser/FortsPortfolios/{clientCode}")]
         public async Task<IActionResult> GetUserFortsPortfolios(string clientCode)
         {
-            _logger.LogInformation($"HttpGet GetUser/FortsPortfolios {clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/FortsPortfolios {clientCode} Call");
 
             MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -123,14 +123,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("GetUser/FortsPortfolios/NoEDP/{clientCode}")]
         public async Task<IActionResult> GetUserFortsNoEDPPortfolios(string clientCode)
         {
-            _logger.LogInformation($"HttpGet GetUser/NoEDP/FortsPortfolios {clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/NoEDP/FortsPortfolios {clientCode} Call");
 
             MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/FortsPortfolios {clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -151,14 +151,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("Get/IsPortfolios/nonEDP/{clientPortfolio}")]
         public async Task<IActionResult> GetIsPortfolioInEDP(string clientPortfolio)
         {
-            _logger.LogInformation($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Call");
 
             BoolResponse result = new BoolResponse();
 
             result.Response = Validator.ValidateClientPortfolio(clientPortfolio);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/IsPortfolios/nonEDP/{clientPortfolio} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -190,14 +190,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("Get/IsClient/inQUIK/{clientCode}")]
         public async Task<IActionResult> GetIsClientBelongsToQUIK(string clientCode)
         {
-            _logger.LogInformation($"HttpGet Get/IsClient/inQUIK/{clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/IsClient/inQUIK/{clientCode} Call");
 
             BoolResponse result = new BoolResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet Get/IsClient/inQUIK/{clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/IsClient/inQUIK/{clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -229,14 +229,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("GetUser/PersonalInfo/{clientCode}")]
         public async Task<IActionResult> GetUserPersonalInfo(string clientCode)
         {
-            _logger.LogInformation($"HttpGet GetUser/PersonalInfo/{clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/PersonalInfo/{clientCode} Call");
 
             ClientInformationResponse result = new ClientInformationResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/{clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/PersonalInfo/{clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 
@@ -268,7 +268,7 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("WarmUp/BackOfficeDataBase")]
         public async Task<IActionResult> WarmUpBackOfficeDataBase()
         {
-            _logger.LogInformation($"HttpGet WarmUp/BackOfficeDataBase Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet WarmUp/BackOfficeDataBase Call");
 
             await _repository.WarmUpBackOfficeDataBase();
 
@@ -278,14 +278,14 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("GetUser/PersonalInfo/BackOffice/{clientCode}")]
         public async Task<IActionResult> GetUserBOPersonalInfo(string clientCode)
         {
-            _logger.LogInformation($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Call");
 
             ClientBOInformationResponse result = new ClientBOInformationResponse();
 
             result.Response = Validator.ValidateClientCode(clientCode);
             if (!result.Response.IsSuccess)
             {
-                _logger.LogWarning($"HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Validation Fail: {result.Response.Messages[0]}");
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetUser/PersonalInfo/BackOffice/{clientCode} Validation Fail: {result.Response.Messages[0]}");
                 return Ok(result);
             }
 

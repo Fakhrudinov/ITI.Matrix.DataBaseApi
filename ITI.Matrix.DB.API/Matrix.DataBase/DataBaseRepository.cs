@@ -23,13 +23,15 @@ namespace Matrix.DataBase
 
         public async Task<ListStringResponseModel> CheckConnections()
         {
-            _logger.LogInformation($"DBRepository CheckConnections Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository CheckConnections Called");
 
             ListStringResponseModel response = new ListStringResponseModel();
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryCheckConnection.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 response.IsSuccess = false;
                 response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return response;
@@ -43,7 +45,7 @@ namespace Matrix.DataBase
                 {
                     OracleCommand command = new OracleCommand(_queryCheckConnection, connection);
 
-                    _logger.LogInformation($"DBRepository CheckConnections try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository CheckConnections try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -59,26 +61,28 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository CheckConnections Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository CheckConnections Failed, Exception: " + ex.Message);
 
                 response.IsSuccess = false;
                 response.Messages.Add("Exception at DataBase: " + ex.Message);
                 return response;
             }
 
-            _logger.LogInformation($"DBRepository CheckConnections Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository CheckConnections Success");
             return response;
         }
 
         public async Task<MatrixClientCodeModelResponse> GetUserSpotPortfolios(string clientCode)
         {
-            _logger.LogInformation($"DBRepository GetUserSpotPortfolios for {clientCode} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserSpotPortfolios for {clientCode} Called");
 
             MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllSpotPortfolios.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -93,7 +97,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(_queryGetAllSpotPortfolios, connection);
                     command.Parameters.Add(":clientCode", clientCode);
 
-                    _logger.LogInformation($"DBRepository GetUserSpotPortfolios try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserSpotPortfolios try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -112,25 +116,27 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetUserSpotPortfolios Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserSpotPortfolios Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetUserSpotPortfolios Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository GetUserSpotPortfolios Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserSpotPortfolios Success");
             return result;
         }
 
         public async Task<MatrixToFortsCodesMappingResponse> GetUserFortsPortfolios(string clientCode)
         {
-            _logger.LogInformation($"DBRepository GetUserFortsPortfolios for {clientCode} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios for {clientCode} Called");
 
             MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllFortsPortfolios.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -145,7 +151,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(_queryGetAllFortsPortfolios, connection);
                     command.Parameters.Add(":clientCode", clientCode);
 
-                    _logger.LogInformation($"DBRepository GetUserFortsPortfolios try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -165,25 +171,27 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository GetUserFortsPortfolios Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Success");
             return result;
         }
 
         public async Task<MatrixToFortsCodesMappingResponse> GetUserFortsPortfoliosNoEDP(string clientCode)
         {
-            _logger.LogInformation($"DBRepository GetUserFortsPortfolios for {clientCode} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios for {clientCode} Called");
 
             MatrixToFortsCodesMappingResponse result = new MatrixToFortsCodesMappingResponse();
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllFortsNoEDPPortfolios.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -198,7 +206,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(_queryGetAllFortsNoEDPPortfolios, connection);
                     command.Parameters.Add(":clientCode", clientCode);
 
-                    _logger.LogInformation($"DBRepository GetUserFortsPortfolios try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -218,19 +226,19 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository GetUserFortsPortfolios Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Success");
             return result;
         }
 
         public async Task<BoolResponse> GetIsPortfolioInEDP(string clientPortfolio)
         {
-            _logger.LogInformation($"DBRepository GetIsPortfolioInEDP for {clientPortfolio} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsPortfolioInEDP for {clientPortfolio} Called");
 
             BoolResponse result = new BoolResponse();
             string requestResult = null;
@@ -238,6 +246,8 @@ namespace Matrix.DataBase
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetPortfolioEDPBelongings.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -252,7 +262,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(_queryGetPortfolioEDPBelongings, connection);
                     command.Parameters.Add(":clientportfolio", clientPortfolio);
 
-                    _logger.LogInformation($"DBRepository GetIsPortfolioInEDP try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsPortfolioInEDP try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -268,13 +278,13 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetIsPortfolioInEDP Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsPortfolioInEDP Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetIsPortfolioInEDP Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository GetIsPortfolioInEDP Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsPortfolioInEDP Success");
 
             if (requestResult == null)
             {
@@ -293,7 +303,7 @@ namespace Matrix.DataBase
 
         public async Task<BoolResponse> GetIsClientBelongsToQUIK(string clientCode)
         {
-            _logger.LogInformation($"DBRepository GetIsClientBelongsToQUIK for {clientCode} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsClientBelongsToQUIK for {clientCode} Called");
 
             BoolResponse result = new BoolResponse();
             string requestResult = null;
@@ -301,6 +311,8 @@ namespace Matrix.DataBase
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetIsClientBelongsToQUIK.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -315,7 +327,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(queryGetIsClientBelongsToQUIK, connection);
                     command.Parameters.Add(":clientCode", clientCode);
 
-                    _logger.LogInformation($"DBRepository GetIsClientBelongsToQUIK try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsClientBelongsToQUIK try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -331,13 +343,13 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetIsClientBelongsToQUIK Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsClientBelongsToQUIK Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetIsClientBelongsToQUIK Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository GetIsClientBelongsToQUIK Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsClientBelongsToQUIK Success");
 
             if (requestResult == null)
             {
@@ -355,13 +367,15 @@ namespace Matrix.DataBase
 
         public async Task<ClientInformationResponse> GetUserPersonalInfo(string clientCode)
         {
-            _logger.LogInformation($"DBRepository GetUserPersonalInfo for {clientCode} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserPersonalInfo for {clientCode} Called");
 
             ClientInformationResponse result = new ClientInformationResponse();
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetPersonalInfo.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -376,7 +390,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(_queryGetPersonalInfo, connection);
                     command.Parameters.Add(":clientCode", clientCode);
 
-                    _logger.LogInformation($"DBRepository GetUserPersonalInfo try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserPersonalInfo try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -401,24 +415,24 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetUserPersonalInfo Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserPersonalInfo Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetUserPersonalInfo Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository GetUserPersonalInfo Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserPersonalInfo Success");
             return result;
         }
 
         public async Task WarmUpBackOfficeDataBase()
         {
-            _logger.LogInformation($"DBRepository WarmUpBackOfficeDataBase Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository WarmUpBackOfficeDataBase Called");
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryWarmUpBackOfficeDataBase.sql");
             if (!File.Exists(filePath))
             {
-                _logger.LogWarning($"DBRepository WarmUpBackOfficeDataBase Failed, Exception: File with request not found at path: " + filePath);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository WarmUpBackOfficeDataBase Failed, Exception: File with request not found at path: " + filePath);
             }
             string queryWarmUpBackOfficeDataBase = File.ReadAllText(filePath);
 
@@ -429,7 +443,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(queryWarmUpBackOfficeDataBase, connection);
 
 
-                    _logger.LogInformation($"DBRepository WarmUpBackOfficeDataBase try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository WarmUpBackOfficeDataBase try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -445,21 +459,23 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository WarmUpBackOfficeDataBase Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository WarmUpBackOfficeDataBase Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"DBRepository WarmUpBackOfficeDataBase Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository WarmUpBackOfficeDataBase Success");
         }
 
         public async Task<ClientBOInformationResponse> GetUserBOPersonalInfo(string clientCode)
         {
-            _logger.LogInformation($"DBRepository GetUserBOPersonalInfo for {clientCode} Called");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserBOPersonalInfo for {clientCode} Called");
 
             ClientBOInformationResponse result = new ClientBOInformationResponse();
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetBOPersonalInfo.sql");
             if (!File.Exists(filePath))
             {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -477,7 +493,7 @@ namespace Matrix.DataBase
                     OracleCommand command = new OracleCommand(queryGetBOPersonalInfo, connection);
                     command.Parameters.Add(":clientCode", clientCode);
 
-                    _logger.LogInformation($"DBRepository GetUserBOPersonalInfo try to connect");
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserBOPersonalInfo try to connect");
                     await connection.OpenAsync();
 
                     using (OracleDataReader reader = command.ExecuteReader())
@@ -504,7 +520,7 @@ namespace Matrix.DataBase
             }
             catch (Exception ex)
             {
-                _logger.LogWarning($"DBRepository GetUserBOPersonalInfo Failed, Exception: " + ex.Message);
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserBOPersonalInfo Failed, Exception: " + ex.Message);
 
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add($"DBRepository GetUserBOPersonalInfo Failed, Exception: " + ex.Message);
@@ -554,7 +570,7 @@ namespace Matrix.DataBase
                 result.ClientBOInformation.isClientResident = true;
             }
 
-            _logger.LogInformation($"DBRepository GetUserBOPersonalInfo Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserBOPersonalInfo Success");
             return result;
         }
     }

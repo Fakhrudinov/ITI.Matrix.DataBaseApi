@@ -20,7 +20,7 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("OK")]
         public IActionResult IsOk()
         {
-            _logger.LogInformation("HttpGet IsOk Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet IsOk Call");
 
             return Ok("Yes");
         }
@@ -28,7 +28,7 @@ namespace ITI.Matrix.DB.API.Controllers
         [HttpGet("CheckConnections/MatrixDataBase")]
         public async Task<IActionResult> CheckConnection()
         {
-            _logger.LogInformation("HttpGet CheckConnections/MatrixDataBase Call");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet CheckConnections/MatrixDataBase Call");
 
             ListStringResponseModel result = await _repository.CheckConnections();
 
