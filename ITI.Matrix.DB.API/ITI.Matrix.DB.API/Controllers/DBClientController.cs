@@ -79,7 +79,7 @@ namespace ITI.Matrix.DB.API.Controllers
                 else
                 {
                     // remove portfolios - which not passed filter
-                    for (int i = result.MatrixClientCodesList.Count - 1; i > 0; i--)
+                    for (int i = result.MatrixClientCodesList.Count - 1; i >= 0; i--)
                     {
                         if (!_portfolioFilter.PortfolioList.Contains(result.MatrixClientCodesList[i].MatrixClientCode.Split("-")[1]))
                         {
