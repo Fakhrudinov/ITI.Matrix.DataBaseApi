@@ -104,8 +104,8 @@ namespace Matrix.DataBase
                     {
                         while (await reader.ReadAsync())
                         {
-                            MatrixClientCodeModel portfolio = new MatrixClientCodeModel();
-                            portfolio.MatrixClientCode = reader.GetString(0);
+                            MatrixClientPortfolioModel portfolio = new MatrixClientPortfolioModel();
+                            portfolio.MatrixClientPortfolio = reader.GetString(0);
 
                             result.MatrixClientCodesList.Add(portfolio);
                         }
