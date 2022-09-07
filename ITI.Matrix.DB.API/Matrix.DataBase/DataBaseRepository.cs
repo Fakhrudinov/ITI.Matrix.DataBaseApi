@@ -13,7 +13,7 @@ namespace Matrix.DataBase
         private ILogger<DataBaseRepository> _logger;
         private readonly string _connectionString = "";
 
-        //команды не должны содержать ; в конце! 
+        //команды sql не должны содержать ; в конце! 
 
         public DataBaseRepository(IOptions<DataBaseConnectionConfiguration> connection, ILogger<DataBaseRepository> logger)
         {
@@ -122,7 +122,8 @@ namespace Matrix.DataBase
                 result.Response.Messages.Add($"DBRepository GetUserSpotPortfolios Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserSpotPortfolios Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserSpotPortfolios Success, " +
+                $"records count returned {result.MatrixClientCodesList.Count}");
             return result;
         }
 
@@ -177,7 +178,8 @@ namespace Matrix.DataBase
                 result.Response.Messages.Add($"DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Success, " +
+                $"records count returned {result.MatrixToFortsCodesList.Count}");
             return result;
         }
 
@@ -232,7 +234,8 @@ namespace Matrix.DataBase
                 result.Response.Messages.Add($"DBRepository GetUserFortsPortfolios Failed, Exception: " + ex.Message);
             }
 
-            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Success");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserFortsPortfolios Success, " +
+                $"records count returned {result.MatrixToFortsCodesList.Count}");
             return result;
         }
 
@@ -571,6 +574,528 @@ namespace Matrix.DataBase
             }
 
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetUserBOPersonalInfo Success");
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllNonKvalUsersKsurSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersKsurSpotPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllNonKvalKsurUsersSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllNonKvalKsurUsersSpotPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllNonKvalKsurUsersSpotPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllNonKvalKpurUsersSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalKpurUsersSpotPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllNonKvalKpurUsersSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllNonKvalKpurUsersSpotPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllNonKvalKpurUsersSpotPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllFrendlyNonResidentSpotPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllFrendlyNonResidentSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllFrendlyNonResidentSpotPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllFrendlyNonResidentSpotPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllEnemyNonResidentSpotPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllEnemyNonResidentSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllEnemyNonResidentSpotPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllEnemyNonResidentSpotPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentCdPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllEnemyNonResidentCdPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllEnemyNonResidentCdPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllEnemyNonResidentCdPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllEnemyNonResidentCdPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentCdPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllFrendlyNonResidentCdPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllFrendlyNonResidentCdPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllFrendlyNonResidentCdPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllFrendlyNonResidentCdPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllNonKvalKpurUsersCdPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersKpurCdPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllNonKvalKpurCdPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllNonKvalKpurCdPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllNonKvalKpurCdPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllNonKvalUsersKsurCdPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersKsurCdPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllNonKvalKsurCdPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllNonKvalKsurCdPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllNonKvalKsurCdPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllKvalUsersKpurSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllKvalUsersKpurSpotPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllKvalKpurSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllKvalKpurSpotPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllKvalKpurSpotPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllKvalUsersKsurCdPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllKvalUsersKsurCdPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllKvalKsurCdPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllKvalKsurCdPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllKvalKsurCdPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllKvalUsersKpurCdPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllKvalUsersKpurCdPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllKvalKpurCdPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllKvalKpurCdPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllKvalKpurCdPortfolios);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllKvalUsersSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllKvalUsersSpotPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllKvalSpotPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllKvalSpotPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_gueryGetAllKvalSpotPortfolios);
+            return result;
+        }
+
+        private async Task<MatrixClientCodeModelResponse> GetMatrixClientCodeModelResponse(string guery)
+        {
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(guery, connection);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetMatrixClientCodeModelResponse try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            MatrixClientPortfolioModel portfolio = new MatrixClientPortfolioModel();
+                            portfolio.MatrixClientPortfolio = reader.GetString(0);
+
+                            result.MatrixClientCodesList.Add(portfolio);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetMatrixClientCodeModelResponse Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetMatrixClientCodeModelResponse Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetMatrixClientCodeModelResponse Success, " +
+                $"records count returned {result.MatrixClientCodesList.Count}");
+            return result;
+        }
+
+        public async Task<FortsClientCodeModelResponse> GetAllEnemyNonResidentFortsCodes()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllEnemyNonResidentFortsCodes Called");
+
+            FortsClientCodeModelResponse result = new FortsClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllEnemyNonResidentFortsCodes.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllEnemyNonResidentFortsCodes = File.ReadAllText(filePath);
+
+            result = await GetFortsClientCodesModelResponse(_gueryGetAllEnemyNonResidentFortsCodes);
+            return result;
+        }
+
+        public async Task<FortsClientCodeModelResponse> GetAllNonKvalUsersWithTest16FortsCodes()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersWithTest16FortsCodes Called");
+
+            FortsClientCodeModelResponse result = new FortsClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllNonKvalUsersWithTest16FortsCodes.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllNonKvalUsersWithTest16FortsCodes = File.ReadAllText(filePath);
+
+            result = await GetFortsClientCodesModelResponse(_gueryGetAllNonKvalUsersWithTest16FortsCodes);
+            return result;
+        }
+
+        public async Task<FortsClientCodeModelResponse> GetAllKvalUsersFortsCodes()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllKvalUsersFortsCodes Called");
+
+            FortsClientCodeModelResponse result = new FortsClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllKvalUsersFortsCodes.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetAllKvalUsersFortsCodes = File.ReadAllText(filePath);
+
+            result = await GetFortsClientCodesModelResponse(_gueryGetAllKvalUsersFortsCodes);
+            return result;
+        }
+
+        private async Task<FortsClientCodeModelResponse> GetFortsClientCodesModelResponse(string guery)
+        {
+            FortsClientCodeModelResponse result = new FortsClientCodeModelResponse();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(guery, connection);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetFortsClientCodesModelResponse try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            FortsClientCodeModel portfolio = new FortsClientCodeModel();
+                            portfolio.FortsClientCode = reader.GetString(0);
+
+                            result.FortsClientCodesList.Add(portfolio);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetFortsClientCodesModelResponse Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetFortsClientCodesModelResponse Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetFortsClientCodesModelResponse Success" +
+                $", records count returned {result.FortsClientCodesList.Count}");
+            return result;
+        }
+
+        public async Task<SecurityAndBoardResponse> GetSecuritiesSpotBlackListForNekval()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSecuritiesSpotBlackListForNekval Called");
+
+            SecurityAndBoardResponse result = new SecurityAndBoardResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetSecuritiesSpotBlackListForNekval.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetSecuritiesSpotBlackListForNekval = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(_gueryGetSecuritiesSpotBlackListForNekval, connection);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSecuritiesSpotBlackListForNekval try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            SecurityAndBoardModel secAndBord = new SecurityAndBoardModel();
+                            
+                            secAndBord.Board = reader.GetString(0);
+                            secAndBord.Secutity = reader.GetString(1);
+
+                            result.SecurityAndBoardList.Add(secAndBord);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSecuritiesSpotBlackListForNekval Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetSecuritiesSpotBlackListForNekval Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSecuritiesSpotBlackListForNekval Success" +
+                $", records count returned {result.SecurityAndBoardList.Count}");
+            return result;
+        }
+
+        public async Task<PortfoliosAndTestForComplexProductResponse> GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct Called");
+
+            PortfoliosAndTestForComplexProductResponse result = new PortfoliosAndTestForComplexProductResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetNonKvalSpotPortfolioAndComplexProductTests.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _gueryGetNonKvalSpotPortfolioAndComplexProductTests = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(_gueryGetNonKvalSpotPortfolioAndComplexProductTests, connection);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            PortfoliosAndTestForComplexProductModel PortfolioAndTest = new PortfoliosAndTestForComplexProductModel();
+
+                            PortfolioAndTest.MatrixClientPortfolio = reader.GetString(0);
+                            PortfolioAndTest.TestForComplexProduct = reader.GetInt16(1);
+
+                            result.TestForComplexProductList.Add(PortfolioAndTest);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct Success" +
+                $", records count returned {result.TestForComplexProductList.Count}");
             return result;
         }
     }
