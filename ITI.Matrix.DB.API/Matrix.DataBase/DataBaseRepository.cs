@@ -841,6 +841,28 @@ namespace Matrix.DataBase
             return result;
         }
 
+        public async Task<MatrixClientCodeModelResponse> GetAllCDPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllCDPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "gueryGetAllCDPortfolios.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _guerygueryGetAllCDPortfolios = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(_guerygueryGetAllCDPortfolios);
+            return result;
+        }
+
         private async Task<MatrixClientCodeModelResponse> GetMatrixClientCodeModelResponse(string guery)
         {
             MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();

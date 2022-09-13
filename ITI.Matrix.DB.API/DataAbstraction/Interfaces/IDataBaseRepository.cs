@@ -15,6 +15,7 @@ namespace DataAbstraction.Interfaces
         Task WarmUpBackOfficeDataBase();
         Task<MatrixClientCodeModelResponse> GetAllNonKvalUsersKsurSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllNonKvalKpurUsersSpotPortfolios();
+        Task<MatrixClientCodeModelResponse> GetAllCDPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentSpotPortfolios();
         Task<SecurityAndBoardResponse> GetSecuritiesSpotBlackListForNekval();
         Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentSpotPortfolios();
