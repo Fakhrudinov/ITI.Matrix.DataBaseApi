@@ -16,7 +16,7 @@ namespace DataAbstraction.Interfaces
         Task<MatrixClientCodeModelResponse> GetAllNonKvalUsersKsurSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllNonKvalKpurUsersSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllCDPortfolios();
-        Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentSpotPortfolios();
+        //Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentSpotPortfolios();
         Task<SecurityAndBoardResponse> GetSecuritiesSpotBlackListForNekval();
         Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentCdPortfolios();
@@ -31,5 +31,7 @@ namespace DataAbstraction.Interfaces
         Task<FortsClientCodeModelResponse> GetAllKvalUsersFortsCodes();
         Task<MatrixClientCodeModelResponse> GetAllKvalUsersSpotPortfolios();
         Task<PortfoliosAndTestForComplexProductResponse> GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct();
+        Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentKvalSpotPortfolios();
+        Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentNonKvalSpotPortfolios();
     }
 }

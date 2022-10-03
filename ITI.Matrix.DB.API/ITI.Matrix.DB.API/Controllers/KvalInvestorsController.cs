@@ -157,14 +157,34 @@ namespace ITI.Matrix.DB.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetAll/Frendly/NonResident/Spot/Portfolios")]
-        public async Task<IActionResult> GetAllFrendlyNonResidentSpotPortfolios()
+        //[HttpGet("GetAll/Frendly/NonResident/Spot/Portfolios")]
+        //public async Task<IActionResult> GetAllFrendlyNonResidentSpotPortfolios()
+        //{
+        //    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetAll/Frendly/NonResident/Spot/Portfolios");
+
+        //    MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+        //    result = await _repository.GetAllFrendlyNonResidentSpotPortfolios();
+
+        //    if (result.Response.IsSuccess)
+        //    {
+        //        if (result.MatrixClientCodesList.Count == 0)
+        //        {
+        //            result.Response.Messages.Add("(404) No portfolios found ");
+        //        }
+        //    }
+
+        //    return Ok(result);
+        //}
+
+        [HttpGet("GetAll/Frendly/NonResident/Kval/Spot/Portfolios")]
+        public async Task<IActionResult> GetAllFrendlyNonResidentKvalSpotPortfolios()
         {
-            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetAll/Frendly/NonResident/Spot/Portfolios");
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetAll/Frendly/NonResident/Kval/Spot/Portfolios");
 
             MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
 
-            result = await _repository.GetAllFrendlyNonResidentSpotPortfolios();
+            result = await _repository.GetAllFrendlyNonResidentKvalSpotPortfolios();
 
             if (result.Response.IsSuccess)
             {
@@ -176,6 +196,26 @@ namespace ITI.Matrix.DB.API.Controllers
 
             return Ok(result);
         }
+        [HttpGet("GetAll/Frendly/NonResident/NonKval/Spot/Portfolios")]
+        public async Task<IActionResult> GetAllFrendlyNonResidentNonKvalSpotPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet GetAll/Frendly/NonResident/NonKval/Spot/Portfolios");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            result = await _repository.GetAllFrendlyNonResidentNonKvalSpotPortfolios();
+
+            if (result.Response.IsSuccess)
+            {
+                if (result.MatrixClientCodesList.Count == 0)
+                {
+                    result.Response.Messages.Add("(404) No portfolios found ");
+                }
+            }
+
+            return Ok(result);
+        }
+
 
         [HttpGet("GetAll/Frendly/NonResident/Cd/Portfolios")]
         public async Task<IActionResult> GetAllFrendlyNonResidentCdPortfolios()

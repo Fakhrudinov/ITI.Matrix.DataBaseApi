@@ -34,8 +34,14 @@
     <None Update="SqlQuerys\gueryGetAllFrendlyNonResidentCdPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="SqlQuerys\gueryGetAllFrendlyNonResidentSpotPortfolios.sql">
+    <None Update="SqlQuerys\gueryGetAllFrendlyNonResidentKvalSpotPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryGetAllFrendlyNonResidentNonKvalSpotPortfolios.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryGetAllFrendlyNonResidentSpotPortfolios_delete.sql">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\gueryGetAllKvalKpurCdPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -1,9 +1,15 @@
-select distinct id_account 
-      from moff.client_portfolio 
-      where id_dealing = 1 
-        and (id_client in 
-				(select ps_code from moff.persons 
-					where trade_system = 'Q')
-				OR  id_account in 
-				('BC21398-MO-03','BC21398-MO-05','BC21398-MO-06'))			
-        and secboard in ('CETS', 'EQ')
+select ID_ACCOUNT from v_kval_risk_stat
+	WHERE 
+		KVAL = 1
+		AND
+		(
+			ID_ACCOUNT LIKE '%-MS-%'
+			OR ID_ACCOUNT LIKE '%-FX-%'
+			OR ID_ACCOUNT LIKE '%-CD-%'
+		) 
+UNION 
+SELECT 'BC21398-MO-03' AS ID_ACCOUNT FROM dual
+UNION 
+SELECT 'BC21398-MO-05' AS ID_ACCOUNT FROM dual
+UNION 
+SELECT 'BC21398-MO-06' AS ID_ACCOUNT FROM dual
