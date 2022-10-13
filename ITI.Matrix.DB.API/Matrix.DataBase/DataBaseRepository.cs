@@ -797,6 +797,50 @@ namespace Matrix.DataBase
             return result;
         }
 
+        public async Task<MatrixClientCodeModelResponse> GetAllRestrictedCDPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllRestrictedCDPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetCDPortfolioListForTemplateCD_Restrict.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetCDPortfolioListForTemplateCD_Restrict = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(queryGetCDPortfolioListForTemplateCD_Restrict);
+            return result;
+        }
+
+        public async Task<MatrixClientCodeModelResponse> GetAllAllowedCDPortfolios()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllAllowedCDPortfolios Called");
+
+            MatrixClientCodeModelResponse result = new MatrixClientCodeModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetCDPortfolioListForTemplateCD_portfolio.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetCDPortfolioListForTemplateCD_portfolio = File.ReadAllText(filePath);
+
+            result = await GetMatrixClientCodeModelResponse(queryGetCDPortfolioListForTemplateCD_portfolio);
+            return result;
+        }
+
         public async Task<MatrixClientCodeModelResponse> GetAllKvalUsersKpurSpotPortfolios()
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllKvalUsersKpurSpotPortfolios Called");
@@ -1162,6 +1206,252 @@ namespace Matrix.DataBase
 
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct Success" +
                 $", records count returned {result.TestForComplexProductList.Count}");
+            return result;
+        }
+
+        public async Task<MatrixClientAccountsModelResponse> GetAllUsersWithOptionWorkshop()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllUsersWithOptionWorkshop Called");
+
+            MatrixClientAccountsModelResponse result = new MatrixClientAccountsModelResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetAllClientsWithOptionWorkshop.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string _queryGetAllClientsWithOptionWorkshop = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(_queryGetAllClientsWithOptionWorkshop, connection);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllUsersWithOptionWorkshop try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            MatrixClientAccountModel newAccount = new MatrixClientAccountModel();
+                            newAccount.MatrixClientAccount = reader.GetString(0);
+
+                            result.MatrixClientAccountList.Add(newAccount);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllUsersWithOptionWorkshop Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetAllUsersWithOptionWorkshop Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetAllUsersWithOptionWorkshop Success, " +
+                $"records count returned {result.MatrixClientAccountList.Count}");
+            return result;
+        }
+
+        public async Task<BoolResponse> GetIsUserHaveOptionWorkshop(string clientCode)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsUserHaveOptionWorkshop for {clientCode} Called");
+
+            BoolResponse result = new BoolResponse();
+            string requestResult = null;
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryCheckIsClientHaveOptionWorkshop.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryCheckIsClientHaveOptionWorkshop = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryCheckIsClientHaveOptionWorkshop, connection);
+                    command.Parameters.Add(":clientCode", clientCode);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsUserHaveOptionWorkshop try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            requestResult = reader.GetString(0);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsUserHaveOptionWorkshop Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetIsUserHaveOptionWorkshop Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetIsUserHaveOptionWorkshop Success");
+
+            if (requestResult == null)
+            {
+                result.IsTrue = false;
+            }
+            else
+            {
+                result.IsTrue = true;
+            }
+
+            return result;
+        }
+
+        public async Task<ClientAndMoneyResponse> GetClientsSpotPortfoliosWhoTradesYesterday(int daysShift)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsSpotPortfoliosWhoTradesYesterday Called with daysShift={daysShift}");
+
+            ClientAndMoneyResponse result = new ClientAndMoneyResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetClientsWithMoneyWhoTradeYesterday.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetClientsWithMoneyWhoTradeYesterday = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryGetClientsWithMoneyWhoTradeYesterday, connection);
+                    command.Parameters.Add(":dayShiftOne", daysShift.ToString());
+                    command.Parameters.Add(":dayShiftTwo", (daysShift - 1).ToString());
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsSpotPortfoliosWhoTradesYesterday try to connect");
+                    await connection.OpenAsync();
+                    
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ClientAndMoneyModel newClient = new ClientAndMoneyModel();
+
+                            newClient.MatrixClientPortfolio = reader.GetString(0);
+                            newClient.Money = reader.GetDecimal(1);
+
+                            result.Clients.Add(newClient);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsSpotPortfoliosWhoTradesYesterday Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetClientsSpotPortfoliosWhoTradesYesterday Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsSpotPortfoliosWhoTradesYesterday Success" +
+                $", clients count returned {result.Clients.Count}");
+
+            return result;
+        }
+
+        public async Task<ClientDepoPositionsResponse> GetClientsPositionsByMatrixPortfolioList(IEnumerable<string> portfolios)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsPositionsByMatrixPortfolioList Called");
+
+            ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetClientsPositionsByPortfolioList.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetClientsPositionsByPortfolioList = File.ReadAllText(filePath);
+
+            string parametresPortfolio = "";//сделать 'BP3871-MS-01','BP19195-CD-02', 'BP67722-MS-01', 'BP33736-MS-01'
+            foreach (string portfolio in portfolios)
+            {
+                parametresPortfolio = parametresPortfolio + $",'{portfolio}'";
+            }
+            parametresPortfolio = parametresPortfolio.Substring(1);//убрать первую запятую
+            //подставляем параметры в запрос
+            queryGetClientsPositionsByPortfolioList = queryGetClientsPositionsByPortfolioList.Replace(":portfoliosList", parametresPortfolio);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryGetClientsPositionsByPortfolioList, connection);
+                    //command.Parameters.Add(":portfoliosList", parametresPortfolio);//так почему то не работает.
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsPositionsByMatrixPortfolioList try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ClientDepoPositionModel newClient = new ClientDepoPositionModel();
+
+                            newClient.MatrixClientPortfolio = reader.GetString(0);
+                            newClient.SecCode = reader.GetString(1);
+                            newClient.OpenBalance = reader.GetDecimal(2);
+                            newClient.AveragePrice = reader.GetDecimal(3);
+                            newClient.SecBoard = reader.GetString(4);
+                            newClient.TKS = reader.GetString(5);
+
+                            result.Clients.Add(newClient);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsPositionsByMatrixPortfolioList Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetClientsPositionsByMatrixPortfolioList Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsPositionsByMatrixPortfolioList Success" +
+                $", clients count returned {result.Clients.Count}");
+
             return result;
         }
     }

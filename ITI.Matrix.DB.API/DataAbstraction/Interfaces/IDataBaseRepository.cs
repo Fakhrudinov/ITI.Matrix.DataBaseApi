@@ -16,16 +16,23 @@ namespace DataAbstraction.Interfaces
         Task<MatrixClientCodeModelResponse> GetAllNonKvalUsersKsurSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllNonKvalKpurUsersSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllCDPortfolios();
+        Task<MatrixClientCodeModelResponse> GetAllRestrictedCDPortfolios();
+        Task<MatrixClientAccountsModelResponse> GetAllUsersWithOptionWorkshop();
+
         //Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentSpotPortfolios();
         Task<SecurityAndBoardResponse> GetSecuritiesSpotBlackListForNekval();
         Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllEnemyNonResidentCdPortfolios();
+        Task<ClientAndMoneyResponse> GetClientsSpotPortfoliosWhoTradesYesterday(int daysShift);
         Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentCdPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllNonKvalKpurUsersCdPortfolios();
+        Task<MatrixClientCodeModelResponse> GetAllAllowedCDPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllNonKvalUsersKsurCdPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllKvalUsersKsurCdPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllKvalUsersKpurCdPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllKvalUsersKpurSpotPortfolios();
+        Task<ClientDepoPositionsResponse> GetClientsPositionsByMatrixPortfolioList(IEnumerable<string> portfolios);
+        Task<BoolResponse> GetIsUserHaveOptionWorkshop(string clientCode);
         Task<FortsClientCodeModelResponse> GetAllEnemyNonResidentFortsCodes();
         Task<FortsClientCodeModelResponse> GetAllNonKvalUsersWithTest16FortsCodes();
         Task<FortsClientCodeModelResponse> GetAllKvalUsersFortsCodes();

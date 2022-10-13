@@ -82,6 +82,12 @@
     <None Update="SqlQuerys\queryCheckConnection.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SqlQuerys\queryCheckIsClientHaveOptionWorkshop.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetAllClientsWithOptionWorkshop.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SqlQuerys\queryGetAllFortsNoEDPPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -92,6 +98,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\queryGetBOPersonalInfo.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetCDPortfolioListForTemplateCD_portfolio.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetCDPortfolioListForTemplateCD_Restrict.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetClientsPositionsByPortfolioList.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetClientsWithMoneyWhoTradeYesterday.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\queryGetIsClientBelongsToQUIK.sql">
