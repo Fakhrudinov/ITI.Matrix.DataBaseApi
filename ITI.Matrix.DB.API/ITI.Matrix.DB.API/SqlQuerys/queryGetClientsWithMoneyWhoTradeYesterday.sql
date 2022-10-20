@@ -1,4 +1,4 @@
-select cp.id CL_CODE, cast(cp.cash as number(38,7)) LIMLIM 
+select cp.id CL_CODE, cast(cp.cash as number(38,7)) LIMLIM, cp.ACC_EXT AS TKS
 	from moff.client_portfolio cp 
 	where cp.id_client in 
 		( 
@@ -10,7 +10,7 @@ select cp.id CL_CODE, cast(cp.cash as number(38,7)) LIMLIM
 					select prs.ps_code 
 					from moff.persons prs 
 						where prs.trade_system= 'Q' 
-						and prs.ps_code not in ('BP19195', 'BC64582')
+						and prs.ps_code not in ('BP19195', 'BC645824')
 				)
 				and d.secboard != 'RTS_FUT' 
 		) 

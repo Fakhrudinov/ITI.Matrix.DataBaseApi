@@ -1363,6 +1363,15 @@ namespace Matrix.DataBase
                             newClient.MatrixClientPortfolio = reader.GetString(0);
                             newClient.Money = reader.GetDecimal(1);
 
+                            if (reader.IsDBNull(2))
+                            {
+                                newClient.TKS = "";
+                            }
+                            else
+                            {
+                                newClient.TKS = reader.GetString(2);
+                            }                            
+
                             result.Clients.Add(newClient);
                         }
                     }
