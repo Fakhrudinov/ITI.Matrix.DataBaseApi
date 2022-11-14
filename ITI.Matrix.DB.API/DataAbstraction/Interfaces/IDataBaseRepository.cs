@@ -40,5 +40,10 @@ namespace DataAbstraction.Interfaces
         Task<PortfoliosAndTestForComplexProductResponse> GetAllNonKvalUsersSpotPortfoliosAndTestForComplexProduct();
         Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentKvalSpotPortfolios();
         Task<MatrixClientCodeModelResponse> GetAllFrendlyNonResidentNonKvalSpotPortfolios();
+        Task<SingleClientPortfoliosMoneyResponse> GetSingleClientMoneySpotLimitsByMatrixAccount(string account);
+        Task<SingleClientPortfoliosPositionResponse> GetSingleClientActualPositionsLimitsByMatrixAccount(string account);
+        Task<SingleClientPortfoliosPositionResponse> GetSingleClientZeroPositionToTKSLimitsByMatrixAccount(string account);
+        Task<SingleClientPortfoliosPositionResponse> GetSingleClientClosedPositionsLimitsByMatrixAccount(string account, int days);
+        Task<BoolResponse> GetSingleClientDoTradesByMatrixAccount(string account, int days);
     }
 }

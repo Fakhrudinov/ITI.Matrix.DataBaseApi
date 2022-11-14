@@ -10,9 +10,9 @@ select cp.id CL_CODE, cast(cp.cash as number(38,7)) LIMLIM, cp.ACC_EXT AS TKS
 					select prs.ps_code 
 					from moff.persons prs 
 						where prs.trade_system= 'Q' 
-						and prs.ps_code not in ('BP19195', 'BC645824')
+						and prs.ps_code not in ('BP019195', 'BC064582')
 				)
 				and d.secboard != 'RTS_FUT' 
 		) 
-		and cp.secboard != 'RTS_FUT' 
+		and cp.secboard NOT IN ('RTS_FUT', 'NONE') 
 		AND cp.cash != 0

@@ -75,5 +75,20 @@ namespace DataValidationService
 
             return responseList;
         }
+
+        public static ListStringResponseModel ValidateMatrixClientAccount(string account)
+        {
+            var responseList = new ListStringResponseModel();
+
+            var validator = new ClientCodeValidationService();
+            ValidationResult validationResult = validator.Validate(account);
+
+            if (!validationResult.IsValid)
+            {
+                responseList = SetResponse(validationResult, responseList);
+            }
+
+            return responseList;
+        }
     }
 }

@@ -1,1 +1,1 @@
-select * from moff.CLIENT_PORTFOLIO where id_client = 'BP17840'
+select * from moff.CLIENT_PORTFOLIO where id_client = 'BP19195'

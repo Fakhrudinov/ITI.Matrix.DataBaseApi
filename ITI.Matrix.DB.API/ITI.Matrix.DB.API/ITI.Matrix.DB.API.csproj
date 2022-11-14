@@ -121,6 +121,21 @@
     <None Update="SqlQuerys\queryGetPortfolioEDPBelongings.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SqlQuerys\queryGetSingleClientActualPositionsLimitsByMatrixAccount.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetSingleClientClosedPositionsLimitsByMatrixAccount.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetSingleClientDoTradesByMatrixAccount.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetSingleClientMoneySpotLimitsByMatrixAccount.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\queryGetSingleClientZeroPositionToTKSLimitsByMatrixAccount.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SqlQuerys\queryWarmUpBackOfficeDataBase.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

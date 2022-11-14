@@ -1439,8 +1439,24 @@ namespace Matrix.DataBase
                             newClient.MatrixClientPortfolio = reader.GetString(0);
                             newClient.SecCode = reader.GetString(1);
                             newClient.OpenBalance = reader.GetDecimal(2);
-                            newClient.AveragePrice = reader.GetDecimal(3);
-                            newClient.SecBoard = reader.GetString(4);
+                            if (reader.IsDBNull(3))
+                            {
+                                newClient.AveragePrice = 0;
+                            }
+                            else
+                            {
+                                newClient.AveragePrice = reader.GetDecimal(3);
+                            }
+                            
+                            if (reader.IsDBNull(4))
+                            {
+                                newClient.SecBoard = "NULL";
+                            }
+                            else
+                            {
+                                newClient.SecBoard = reader.GetString(4);
+                            }
+
                             newClient.TKS = reader.GetString(5);
 
                             result.Clients.Add(newClient);
@@ -1461,6 +1477,273 @@ namespace Matrix.DataBase
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsPositionsByMatrixPortfolioList Success" +
                 $", clients count returned {result.Clients.Count}");
 
+            return result;
+        }
+
+        public async Task<SingleClientPortfoliosMoneyResponse> GetSingleClientMoneySpotLimitsByMatrixAccount(string account)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientMoneySpotLimitsByMatrixAccount {account} Called");
+
+            SingleClientPortfoliosMoneyResponse result = new SingleClientPortfoliosMoneyResponse();
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetSingleClientMoneySpotLimitsByMatrixAccount.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetSingleClientMoneySpotLimitsByMatrixAccount = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryGetSingleClientMoneySpotLimitsByMatrixAccount, connection);
+                    command.Parameters.Add(":account", account);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientMoneySpotLimitsByMatrixAccount " +
+                        $"{account} try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            PortfoliosAndMoneyModel newPortfolio = new PortfoliosAndMoneyModel();
+
+                            newPortfolio.MatrixClientPortfolio = reader.GetString(0);
+                            newPortfolio.MoneyOpenBalanse = reader.GetDecimal(1);
+                            newPortfolio.Leverage = reader.GetInt16(2);
+
+                            result.PortfoliosAndMoney.Add(newPortfolio);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientMoneySpotLimitsByMatrixAccount " +
+                    $"{account} Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetSingleClientMoneySpotLimitsByMatrixAccount {account} Failed, " +
+                    $"Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientMoneySpotLimitsByMatrixAccount " +
+                $"{account} Success, portfolios count returned {result.PortfoliosAndMoney.Count}");
+
+            return result;
+        }
+
+        public async Task<SingleClientPortfoliosPositionResponse> GetSingleClientActualPositionsLimitsByMatrixAccount(string account)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientActualPositionsLimitsByMatrixAccount {account} Called");
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetSingleClientActualPositionsLimitsByMatrixAccount.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetSingleClientActualPositionsLimitsByMatrixAccount = File.ReadAllText(filePath);
+
+            return await GetSingleClientPortfoliosPositionResponseByQuery(queryGetSingleClientActualPositionsLimitsByMatrixAccount, account);
+        }
+
+        public async Task<SingleClientPortfoliosPositionResponse> GetSingleClientZeroPositionToTKSLimitsByMatrixAccount(string account)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientZeroPositionToTKSLimitsByMatrixAccount {account} Called");
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetSingleClientZeroPositionToTKSLimitsByMatrixAccount.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetSingleClientZeroPositionToTKSLimitsByMatrixAccount = File.ReadAllText(filePath);
+
+            return await GetSingleClientPortfoliosPositionResponseByQuery(queryGetSingleClientZeroPositionToTKSLimitsByMatrixAccount, account);
+        }
+
+        public async Task<SingleClientPortfoliosPositionResponse> GetSingleClientClosedPositionsLimitsByMatrixAccount(string account, int daysShift)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientClosedPositionsLimitsByMatrixAccount {account} Called");
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetSingleClientClosedPositionsLimitsByMatrixAccount.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetSingleClientClosedPositionsLimitsByMatrixAccount = File.ReadAllText(filePath);
+
+            return await GetSingleClientPortfoliosPositionResponseByQuery(queryGetSingleClientClosedPositionsLimitsByMatrixAccount, account, daysShift);
+        }
+
+
+        private async Task<SingleClientPortfoliosPositionResponse> GetSingleClientPortfoliosPositionResponseByQuery(
+            string query, 
+            string account, 
+            int daysShift = -1)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientPortfoliosPositionResponseByQuery {account} {daysShift} Called");
+
+            SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(query, connection);
+                    if (daysShift != -1)
+                    {
+                        command.Parameters.Add(":dayShiftOne", daysShift.ToString());
+                    }
+                    command.Parameters.Add(":account", account);
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientPortfoliosPositionResponseByQuery " +
+                        $"{account} try to connect, query is {command.CommandText}");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            ClientDepoPositionModel newPosition = new ClientDepoPositionModel();
+
+                            newPosition.MatrixClientPortfolio = reader.GetString(0);
+                            newPosition.SecCode = reader.GetString(1);
+                            newPosition.OpenBalance = reader.GetDecimal(2);
+                            if (reader.IsDBNull(3))
+                            {
+                                newPosition.AveragePrice = 0;
+                            }
+                            else
+                            {
+                                newPosition.AveragePrice = reader.GetDecimal(3);
+                            }
+
+                            if (reader.IsDBNull(4))
+                            {
+                                newPosition.SecBoard = "NULL";
+                            }
+                            else
+                            {
+                                newPosition.SecBoard = reader.GetString(4);
+                            }
+                            if (reader.IsDBNull(5))
+                            {
+                                newPosition.TKS = "";
+                            }
+                            else
+                            {
+                                newPosition.TKS = reader.GetString(5);
+                            }                            
+
+                            result.PortfoliosAndPosition.Add(newPosition);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientPortfoliosPositionResponseByQuery " +
+                    $"{account} Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetSingleClientMoneySpotLimitsByMatrixAccount {account} Failed, " +
+                    $"Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientPortfoliosPositionResponseByQuery " +
+                $"{account} Success, portfolios count returned {result.PortfoliosAndPosition.Count}");
+
+            return result;
+        }
+
+        public async Task<BoolResponse> GetSingleClientDoTradesByMatrixAccount(string account, int daysShift)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientDoTradesByMatrixAccount for {account} days={daysShift} Called");
+
+            BoolResponse result = new BoolResponse();
+            int requestResult = 0;
+
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SqlQuerys", "queryGetSingleClientDoTradesByMatrixAccount.sql");
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
+                return result;
+            }
+
+            string queryGetSingleClientDoTradesByMatrixAccount = File.ReadAllText(filePath);
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(_connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryGetSingleClientDoTradesByMatrixAccount, connection);
+                    command.Parameters.Add(":clientportfolio", account);
+                    command.Parameters.Add(":dayShiftOne", daysShift.ToString());
+                    command.Parameters.Add(":dayShiftTwo", (daysShift - 1).ToString());
+
+                    _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientDoTradesByMatrixAccount try to connect");
+                    await connection.OpenAsync();
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            requestResult = reader.GetInt16(0);
+                        }
+                    }
+
+                    command.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientDoTradesByMatrixAccount Failed, Exception: " + ex.Message);
+
+                result.Response.IsSuccess = false;
+                result.Response.Messages.Add($"DBRepository GetSingleClientDoTradesByMatrixAccount Failed, Exception: " + ex.Message);
+            }
+
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientDoTradesByMatrixAccount Success");
+
+            if (requestResult == 0)
+            {
+                result.Response.Messages.Add($"Deals not found");
+                return result;
+            }
+
+            result.IsTrue = true;
             return result;
         }
     }
