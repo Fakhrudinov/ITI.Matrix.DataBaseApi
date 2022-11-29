@@ -92,7 +92,7 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Get/SingleClient/ActualPositionsLimits/ByMatrixAccount/{account} Call");
 
-            SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+            ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
 
             //проверим корректность входных данных
             result.Response = Validator.ValidateMatrixClientAccount(account);
@@ -113,7 +113,7 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Get/SingleClient/ClosedPositionsLimits/ByMatrixAccount/{account}/daysShift={days} Call");
 
-            SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+            ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
 
             //проверим корректность входных данных
             result.Response = Validator.ValidateMatrixClientAccount(account);
@@ -134,7 +134,7 @@ namespace ITI.Matrix.DB.API.Controllers
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Get/SingleClient/ZeroPositionToTKSLimits/ByMatrixAccount/{account} Call");
 
-            SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+            ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
 
             //проверим корректность входных данных
             result.Response = Validator.ValidateMatrixClientAccount(account);

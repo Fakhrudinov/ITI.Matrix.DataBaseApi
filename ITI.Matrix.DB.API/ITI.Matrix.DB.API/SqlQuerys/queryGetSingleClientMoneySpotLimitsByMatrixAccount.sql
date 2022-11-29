@@ -4,4 +4,5 @@ select
 		cp.ismargin AS LEVERAGE 
 	from moff.client_portfolio cp
 	where cp.id like :account || '-%'	
-		and cp.secboard != 'RTS_FUT' 
+		and cp.secboard IN ('CETS', 'EQ', 'MON')
+	ORDER BY cp.cash

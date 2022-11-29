@@ -1459,7 +1459,7 @@ namespace Matrix.DataBase
 
                             newClient.TKS = reader.GetString(5);
 
-                            result.Clients.Add(newClient);
+                            result.PortfoliosAndPosition.Add(newClient);
                         }
                     }
 
@@ -1475,7 +1475,7 @@ namespace Matrix.DataBase
             }
 
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetClientsPositionsByMatrixPortfolioList Success" +
-                $", clients count returned {result.Clients.Count}");
+                $", clients count returned {result.PortfoliosAndPosition.Count}");
 
             return result;
         }
@@ -1542,7 +1542,7 @@ namespace Matrix.DataBase
             return result;
         }
 
-        public async Task<SingleClientPortfoliosPositionResponse> GetSingleClientActualPositionsLimitsByMatrixAccount(string account)
+        public async Task<ClientDepoPositionsResponse> GetSingleClientActualPositionsLimitsByMatrixAccount(string account)
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientActualPositionsLimitsByMatrixAccount {account} Called");
 
@@ -1551,7 +1551,7 @@ namespace Matrix.DataBase
             {
                 _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
 
-                SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+                ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -1562,7 +1562,7 @@ namespace Matrix.DataBase
             return await GetSingleClientPortfoliosPositionResponseByQuery(queryGetSingleClientActualPositionsLimitsByMatrixAccount, account);
         }
 
-        public async Task<SingleClientPortfoliosPositionResponse> GetSingleClientZeroPositionToTKSLimitsByMatrixAccount(string account)
+        public async Task<ClientDepoPositionsResponse> GetSingleClientZeroPositionToTKSLimitsByMatrixAccount(string account)
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientZeroPositionToTKSLimitsByMatrixAccount {account} Called");
 
@@ -1571,7 +1571,7 @@ namespace Matrix.DataBase
             {
                 _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
 
-                SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+                ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -1582,7 +1582,7 @@ namespace Matrix.DataBase
             return await GetSingleClientPortfoliosPositionResponseByQuery(queryGetSingleClientZeroPositionToTKSLimitsByMatrixAccount, account);
         }
 
-        public async Task<SingleClientPortfoliosPositionResponse> GetSingleClientClosedPositionsLimitsByMatrixAccount(string account, int daysShift)
+        public async Task<ClientDepoPositionsResponse> GetSingleClientClosedPositionsLimitsByMatrixAccount(string account, int daysShift)
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientClosedPositionsLimitsByMatrixAccount {account} Called");
 
@@ -1591,7 +1591,7 @@ namespace Matrix.DataBase
             {
                 _logger.LogWarning($"{DateTime.Now.ToString("HH:mm:ss:fffff")} Error! File with SQL script not found at " + filePath);
 
-                SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+                ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
                 result.Response.IsSuccess = false;
                 result.Response.Messages.Add("Error! File with SQL script not found at " + filePath);
                 return result;
@@ -1603,14 +1603,14 @@ namespace Matrix.DataBase
         }
 
 
-        private async Task<SingleClientPortfoliosPositionResponse> GetSingleClientPortfoliosPositionResponseByQuery(
+        private async Task<ClientDepoPositionsResponse> GetSingleClientPortfoliosPositionResponseByQuery(
             string query, 
             string account, 
             int daysShift = -1)
         {
             _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} DBRepository GetSingleClientPortfoliosPositionResponseByQuery {account} {daysShift} Called");
 
-            SingleClientPortfoliosPositionResponse result = new SingleClientPortfoliosPositionResponse();
+            ClientDepoPositionsResponse result = new ClientDepoPositionsResponse();
 
             try
             {
