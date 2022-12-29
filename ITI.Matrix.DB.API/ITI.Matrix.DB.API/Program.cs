@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 
 // Matrix DataBase configure
 builder.Services.AddTransient<IDataBaseRepository, DataBaseRepository>();
+builder.Services.AddTransient<IDataBaseDiscountRepository, DataBaseDiscountRepository>();
 builder.Services.Configure<DataBaseConnectionConfiguration>(
     builder.Configuration.GetSection("DataBaseConfig"));
 
