@@ -43,5 +43,35 @@ namespace ITI.Matrix.DB.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("Get/DiscountsList/EQ")]
+        public async Task<IActionResult> GetDiscountsListEQ()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/DiscountsList/EQ Call");
+
+            DiscountsListResponse result = await _repository.GetDiscountsListEQ();
+
+            return Ok(result);
+        }
+
+        [HttpGet("Get/DiscountsList/Cets")]
+        public async Task<IActionResult> GetDiscountsListCets()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/DiscountsList/Cets Call");
+
+            DiscountsListResponse result = await _repository.GetDiscountsListCets();
+
+            return Ok(result);
+        }
+
+        [HttpGet("Get/DiscountsList/Forts")]
+        public async Task<IActionResult> GetDiscountsListForts()
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/DiscountsList/Forts Call");
+
+            DiscountsListResponse result = await _repository.GetDiscountsListForts();
+
+            return Ok(result);
+        }
     }
 }

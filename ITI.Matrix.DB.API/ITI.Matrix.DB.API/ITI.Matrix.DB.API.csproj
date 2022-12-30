@@ -22,6 +22,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SqlQuerys\gueryCheckClientAccounts.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryDiscountGetListCets.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryDiscountGetListEQ.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryDiscountGetListForts.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryDiscountGetSingle.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlQuerys\gueryGetAllCDPortfolios.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SqlQuerys\gueryGetAllEnemyNonResidentCdPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -41,7 +59,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\gueryGetAllFrendlyNonResidentSpotPortfolios_delete.sql">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\gueryGetAllKvalKpurCdPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -53,7 +71,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\gueryGetAllKvalSpotPortfolios.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="SqlQuerys\gueryGetAllKvalUsersFortsCodes.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

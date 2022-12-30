@@ -2,7 +2,7 @@
 
 namespace DataAbstraction.Responses
 {
-    internal class DiscountsListResponse
+    public class DiscountsListResponse
     {
         public DiscountsListResponse()
         {
