@@ -91,11 +91,25 @@ namespace DataValidationService
             return responseList;
         }
 
-        public static ListStringResponseModel ValidateSecurity(string security)
+        public static ListStringResponseModel ValidateSecuritySpot(string security)
         {
             ListStringResponseModel responseList = new ListStringResponseModel();
 
-            SecurityNameValidator validator = new SecurityNameValidator();
+            SecurityNameSpotValidator validator = new SecurityNameSpotValidator();
+            ValidationResult validationResult = validator.Validate(security);
+            if (!validationResult.IsValid)
+            {
+                responseList = SetResponseFromValidationResult.SetResponse(validationResult, responseList);
+            }
+
+            return responseList;
+        }
+
+        public static ListStringResponseModel ValidateSecurityForts(string security)
+        {
+            ListStringResponseModel responseList = new ListStringResponseModel();
+
+            SecurityNameFortsValidator validator = new SecurityNameFortsValidator();
             ValidationResult validationResult = validator.Validate(security);
             if (!validationResult.IsValid)
             {

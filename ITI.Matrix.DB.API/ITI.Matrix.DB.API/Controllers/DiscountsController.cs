@@ -26,10 +26,10 @@ namespace ITI.Matrix.DB.API.Controllers
             DiscountSingleResponse result = new DiscountSingleResponse();
 
             //проверим корректность входных данных
-            ListStringResponseModel validateResult = Validator.ValidateSecurity(security);
+            ListStringResponseModel validateResult = Validator.ValidateSecuritySpot(security);
             if (!validateResult.IsSuccess)
             {
-                _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/SingleDiscount/FromGlobal/{security} " +
+                _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/SingleDiscount/{security} " +
                     $"validate Error: {validateResult.Messages[0]}");
 
                 result.Discount = null;
@@ -40,6 +40,32 @@ namespace ITI.Matrix.DB.API.Controllers
 
 
             result = await _repository.GetSingleDiscount(security);
+
+            return Ok(result);
+        }
+
+        [HttpGet("Get/SingleDiscountForts/{security}")]
+        public async Task<IActionResult> GetSingleDiscountForts(string security)
+        {
+            _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/SingleDiscountForts/{security} Call");
+
+            DiscountSingleResponse result = new DiscountSingleResponse();
+
+            //проверим корректность входных данных
+            ListStringResponseModel validateResult = Validator.ValidateSecurityForts(security);
+            if (!validateResult.IsSuccess)
+            {
+                _logger.LogInformation($"{DateTime.Now.ToString("HH:mm:ss:fffff")} HttpGet Get/SingleDiscountForts/{security} " +
+                    $"validate Error: {validateResult.Messages[0]}");
+
+                result.Discount = null;
+                result.IsSuccess = false;
+                result.Messages.AddRange(validateResult.Messages);
+                return Ok(result);
+            }
+
+
+            result = await _repository.GetSingleDiscountForts(security);
 
             return Ok(result);
         }

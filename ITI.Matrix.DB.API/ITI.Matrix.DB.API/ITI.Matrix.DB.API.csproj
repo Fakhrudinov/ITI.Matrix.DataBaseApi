@@ -37,6 +37,9 @@
     <None Update="SqlQuerys\gueryDiscountGetSingle.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="SqlQuerys\gueryDiscountGetSingleForts.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="SqlQuerys\gueryGetAllCDPortfolios.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

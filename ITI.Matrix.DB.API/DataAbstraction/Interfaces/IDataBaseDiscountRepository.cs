@@ -8,5 +8,6 @@ namespace DataAbstraction.Interfaces
         Task<DiscountsListResponse> GetDiscountsListEQ();
         Task<DiscountsListResponse> GetDiscountsListForts();
         Task<DiscountSingleResponse> GetSingleDiscount(string security);
+        Task<DiscountSingleResponse> GetSingleDiscountForts(string security);
     }
 }
